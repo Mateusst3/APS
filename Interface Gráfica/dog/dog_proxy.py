@@ -114,21 +114,26 @@ class DogProxy:
         resp_json = resp.text
         seek_result = json.loads(resp_json)
         if bool(seek_result):
-            move_dictionary = eval(
-                seek_result["1"]
-            )  #   move is contained in seek_result as a string (to be converted in dictionary)
-            if bool(move_dictionary):
-                match_status = move_dictionary["match_status"]
-                if match_status == "interrupted":  #  an opponent has abandoned the match
-                    self.dog_actor.receive_withdrawal_notification()
-                    self.status = 2
-                else:
-                    move_player_id = move_dictionary["player"]
-                    move_player_order = move_dictionary["order"]
-                    if move_player_id != str(self.player_id):  #  not from the player himself
-                        if int(move_player_order) > self.move_order:  #  not an already handled move
-                            self.move_order = int(move_player_order)
-                            self.dog_actor.receive_move(move_dictionary)
-                            print(move_dictionary)
-                            if move_dictionary["match_status"] == "finished":
-                                self.status = 2
+            print(seek_result)
+            self.dog_actor.receive_move(seek_result)
+        else:
+            print("Errado")
+        # if bool(seek_result):
+        #     move_dictionary = eval(
+        #         seek_result["1"]
+        #     )  #   move is contained in seek_result as a string (to be converted in dictionary)
+        #     if bool(move_dictionary):
+        #         match_status = move_dictionary["match_status"]
+        #         if match_status == "interrupted":  #  an opponent has abandoned the match
+        #             self.dog_actor.receive_withdrawal_notification()
+        #             self.status = 2
+        #         else:
+        #             move_player_id = move_dictionary["player"]
+        #             move_player_order = move_dictionary["order"]
+        #             if move_player_id != str(self.player_id):  #  not from the player himself
+        #                 if int(move_player_order) > self.move_order:  #  not an already handled move
+        #                     self.move_order = int(move_player_order)
+        #                     self.dog_actor.receive_move(move_dictionary)
+        #                     print(move_dictionary)
+        #                     if move_dictionary["match_status"] == "finished":
+        #                         self.status = 2

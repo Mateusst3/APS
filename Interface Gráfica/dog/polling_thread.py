@@ -10,7 +10,6 @@ class PollingThread(Thread):
     def run(self):
         while True:
             status = self.proxy.get_status()
-            print(status)
             if status == 2:  #   connected without match
                 self.proxy.start_status()
                 self.proxy.match_status()
