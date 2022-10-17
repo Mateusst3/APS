@@ -13,7 +13,6 @@ class DogActor:
         self.player_actor = a_player_actor
         resp_dict = self.proxy.initialize(player_name, self)
         self.polling_thread.start()
-        print(resp_dict)
         return resp_dict
 
     def start_match(self, number_of_players):

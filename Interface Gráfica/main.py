@@ -85,9 +85,8 @@ class App(tk.Tk):
         self.playersHubMenu.pack(side='top', fill='both', expand=True)
         self.playerOneCanvas.pack(side='top', fill='both', expand=True)
 
-
-
         def click_carta(carta, jogador):
+            self.dogActor.send_move(str(carta.get_numero()) + carta.get_cor() + jogador.get_nome())
             try:
                 self.cartaSelecionada.destroy()
             except:
@@ -103,7 +102,6 @@ class App(tk.Tk):
                 )
                 self.cartaSelecionada.image = carta
                 self.cartaSelecionada.pack(side='left', fill='both')
-                self.dogActor.send_move(str(carta.get_numero()) + carta.get_cor() + jogador.get_nome())
 
         for jogador in self.__time.get_jogadores():
             jogador.get_posicao().pack(side='top', fill='both', expand=True)
