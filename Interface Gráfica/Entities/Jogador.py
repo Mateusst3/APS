@@ -1,12 +1,14 @@
-from Baralho import Baralho
+from Entities.Baralho import Baralho
 
 
 class Jogador:
 
-    def __init__(self, nome):
+    def __init__(self, nome, posicao):
         self.__nome = nome
         self.__maoDeCartas = Baralho(self).gerar_baralho()
         self.__jogouUltimoTurno = None
+        self.__posicao = posicao
+        self.__ehJogadorPrincipal = None
 
     def get_nome(self):
         return self.__nome
@@ -30,5 +32,14 @@ class Jogador:
 
     def comprar_carta(self, carta):
         self.__maoDeCartas.append(carta)
+
+    def get_posicao(self):
+        return self.__posicao
+
+    def get_jogador_principal(self):
+        return self.__ehJogadorPrincipal
+
+    def set_jogador_principal(self, ehJogadorPrincipal: bool):
+        self.__ehJogadorPrincipal = ehJogadorPrincipal
 
     #TODO implementar dar dica

@@ -1,5 +1,5 @@
-from Time import Time
-from Baralho import Baralho
+from Entities.Time import Time
+from Entities.Baralho import Baralho
 
 
 class Mesa:
@@ -11,14 +11,14 @@ class Mesa:
         self.__baralhoDeDescarte = []
 
     def inicia_partida(self):
-        return len(self.__time)
+        return len(self.__time.get_jogadores())
 
     def embaralhar(self):
         # TODO in a better notebook: uma forma de embaralhar os itens do array
         return self.__baralhoDaMesa
 
     def dar_cartas(self):
-        return len(self.__time)
+        return len(self.__time.get_jogadores())
 
     def get_time(self):
         return self.__time

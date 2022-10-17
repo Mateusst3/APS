@@ -1,3 +1,7 @@
+import random
+import tkinter as tk
+
+
 class Carta:
 
     def __init__(self, cor, numero):
@@ -5,6 +9,9 @@ class Carta:
         self.__cor = cor
         self.__numero = numero
         self.__receuDicaDeNumero = None
+        self.__urls = ["./Cards/1Green.png", "Cards/1White", "Cards/2Blue", "Cards/3Colorful", "Cards/4Yellow", "Cards/5Red"]
+        # self.__urlDestino = "Cards/" + str(numero) + cor + ".png"
+        self.__urlDestino = tk.PhotoImage(file=self.__urls[0])
 
     def get_cor(self):
         return self.__cor
@@ -29,3 +36,6 @@ class Carta:
 
     def set_recebeu_dica_de_cor(self, recebeuDicaDeNumero: bool):
         self.__receuDicaDeNumero = recebeuDicaDeNumero
+
+    def get_url(self):
+        return self.__urlDestino

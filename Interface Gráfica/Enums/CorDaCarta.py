@@ -2,7 +2,7 @@ from enum import Enum
 
 
 class Cor(Enum):
-    RED = 1
-    GREEN = 2
-    BLUE = 3
-    YELLOW = 4
+    Red = 1
+    Green = 2
+    Blue = 3
+    Yellow = 4

@@ -1,4 +1,3 @@
-from Jogador import Jogador
 
 
 class Time:
