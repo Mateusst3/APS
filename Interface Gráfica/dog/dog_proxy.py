@@ -27,7 +27,7 @@ class DogProxy:
         if self.player_name == "":
             self.player_name = "player" + str(self.player_id)
         try:
-            config_file = open("src/config/game.id", "r")
+            config_file = open("./config/game.id", "r")
             self.game_id = config_file.read()
         except FileNotFoundError:
             self.status = 0
@@ -101,6 +101,7 @@ class DogProxy:
         json_move = json.dumps(a_move)  # convert move to json
         post_data = {"player_id": self.player_id, "game_id": self.game_id, "move": json_move}
         resp = requests.post(url, data=post_data)
+        print(a_move)
         if a_move["match_status"] == "next":
             self.status = 3  #   pass the turn and start looking for a move
         elif a_move["match_status"] == "finished":

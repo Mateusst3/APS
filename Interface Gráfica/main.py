@@ -85,8 +85,9 @@ class App(tk.Tk):
         self.playersHubMenu.pack(side='top', fill='both', expand=True)
         self.playerOneCanvas.pack(side='top', fill='both', expand=True)
 
+        self.dogActor.start_match(2)
+
         def click_carta(carta, jogador):
-            self.dogActor.send_move(str(carta.get_numero()) + carta.get_cor() + jogador.get_nome())
             try:
                 self.cartaSelecionada.destroy()
             except:
@@ -102,6 +103,7 @@ class App(tk.Tk):
                 )
                 self.cartaSelecionada.image = carta
                 self.cartaSelecionada.pack(side='left', fill='both')
+                self.dogActor.send_move(str(carta.get_numero()) + carta.get_cor() + jogador.get_nome())
 
         for jogador in self.__time.get_jogadores():
             jogador.get_posicao().pack(side='top', fill='both', expand=True)
@@ -165,8 +167,7 @@ class App(tk.Tk):
         self.discardArea.grid(row=1, column=2, columnspan=1, sticky='nsew')
         self.discardAreaContentRed.pack(side='top', expand=True)
         self.discardAreaContentBlue.pack(side='top', expand=True)
-        self.moveAnother = tk.LabelFrame(self, text='Carta outro jogador', bg='#D0E0E5')
-        self.moveAnother.grid(row=0, column=2, rowspan=1, columnspan=2, sticky="nsew")
+
 
         # Log of hints
         self.hintLog = tk.Frame(self, width=200, bg='#607040')
