@@ -28,8 +28,10 @@ class PlayerInterface(DogPlayerInterface):
 
         self.local_player_hand = Frame(self.main_window, width=550, height=300, bg="gold3")
         self.remote_player_hand = Frame(self.main_window, width=550, height=300, bg="red")
+
         self.local_player_hand.grid(row=1, column=0)
         self.remote_player_hand.grid(row=0, column=0)
+        self.local_player_hand.pack()
 
         # self.table_frame = Frame(self.main_window, padx=100, pady=40, bg="gold3")
         # self.table_frame.grid(row=0, column=0)
@@ -92,40 +94,36 @@ class PlayerInterface(DogPlayerInterface):
         local_players_cards_labels = []
         remote_players_cards_labels = []
 
-
         for jogador in jogadores:
             if jogador.get_eh_local():
                 for carta in jogador.get_mao_de_cartas():
                     carta.set_url("./images/blue1.png")
-                    img = ImageTk.PhotoImage(Image.open(carta.get_url()))
+                    img = ImageTk.PhotoImage(Image.open(carta.get_url()).resize((100, 200)))
                     cartaM = ttk.Button(
+                        self.local_player_hand,
                         image=img,
                         padding=5,
                         compound='bottom',
                         style='RedCard.TLabel',
                     )
                     cartaM.image = img
-                    local_players_cards_labels.append(cartaM)
-                    print(img)
-                    # if jogador.get_mao_de_cartas().index(carta) < 4 and label == local_player_labels[jogador.get_mao_de_cartas().index(carta)+1]:
-                    #     print(label)
-                else:
-                    for i in range(len(jogador.get_mao_de_cartas())):
-                        img = ImageTk.PhotoImage(Image.open(jogador.get_mao_de_cartas()[i].get_url()))
-                        cartaM = ttk.Button(
-                            image=img,
-                            padding=5,
-                            compound='bottom',
-                            style='RedCard.TLabel',
-                        )
-                        cartaM.image = img
-                        remote_players_cards_labels.append(cartaM)
-                        print(img)
+                    cartaM.pack(side='left', fill='both')
 
+            else:
+                for carta in jogador.get_mao_de_cartas():
+                    img = ImageTk.PhotoImage(Image.open(carta.get_url()).resize((100, 200)))
+                    cartaM = ttk.Button(
+                        self.remote_player_hand,
+                        image=img,
+                        padding=5,
+                        compound='bottom',
+                        style='RedCard.TLabel',
+                    )
+                    cartaM.image = img
+                    cartaM.pack(side='left', fill='both')
 
-
-        self.local_player_hand.grid(row = 1, column = 0)
-        self.remote_player_hand.grid(row = 0, column = 0)
+        self.local_player_hand.grid(row=1, column=0)
+        self.remote_player_hand.grid(row=0, column=0)
         # for carta in local_players_cards_labels:
         #     carta.pack(side='left', fill='both')
 
@@ -133,8 +131,6 @@ class PlayerInterface(DogPlayerInterface):
         # o que tentei aqui NÃO FUNCIONAAAAA D:
 
         # Mostra cartas jogadores
-
-
 
         # for jogador in jogadores:
         #     if jogador.get_eh_local():
