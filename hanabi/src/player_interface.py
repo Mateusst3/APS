@@ -1,5 +1,5 @@
 from tkinter import *
-from tkinter import messagebox
+from tkinter import messagebox, ttk
 from tkinter import simpledialog
 from PIL import ImageTk, Image
 from dog.dog_interface import DogPlayerInterface
@@ -8,7 +8,7 @@ from entities.mesa import Mesa
 from Enumerations.StatusPartida import StatusPartida
 
 
-class PlayerInterface(DogPlayerInterface): 
+class PlayerInterface(DogPlayerInterface):
     def __init__(self):
         self.main_window = Tk()  # instanciar Tk
         self.board = Mesa()
@@ -20,23 +20,22 @@ class PlayerInterface(DogPlayerInterface):
         message = self.dog_server_interface.initialize(player_name, self)
         messagebox.showinfo(message=message)
         self.main_window.mainloop()  # abrir a janela0
-        
-        
+
     def fill_main_window(self):
         self.main_window.title("Hanabi")
         self.main_window.geometry("1280x720")
         self.main_window.resizable(False, False)
-        
-        self.local_player_hand = Frame(self.main_window, width = 550, height = 300, bg = "gold3") 
-        self.remote_player_hand = Frame(self.main_window, width = 550, height = 300, bg = "red") 
-        self.local_player_hand.grid(row = 1, column = 0)
-        self.remote_player_hand.grid(row = 0, column = 0)
-        
+
+        self.local_player_hand = Frame(self.main_window, width=550, height=300, bg="gold3")
+        self.remote_player_hand = Frame(self.main_window, width=550, height=300, bg="red")
+        self.local_player_hand.grid(row=1, column=0)
+        self.remote_player_hand.grid(row=0, column=0)
+
         # self.table_frame = Frame(self.main_window, padx=100, pady=40, bg="gold3")
         # self.table_frame.grid(row=0, column=0)
         # self.message_frame = Frame(self.main_window, padx=0, pady=10)
         # self.message_frame.grid(row=1, column=0)
-        
+
         self.menubar = Menu(self.main_window)
         self.menubar.option_add("*tearOff", FALSE)
         self.main_window["menu"] = self.menubar
@@ -46,7 +45,7 @@ class PlayerInterface(DogPlayerInterface):
 
         self.menu_file.add_command(label="Iniciar jogo", command=self.start_match)
         self.menu_file.add_command(label="Restaurar estado inicial", command=self.start_game)
-        
+
     def start_match(self):
         match_status = self.board.get_estado().get_status()
         if match_status == 1:
@@ -57,16 +56,16 @@ class PlayerInterface(DogPlayerInterface):
                 message = start_status.get_message()
                 if code == "0" or code == "1":
                     messagebox.showinfo(message=message)
-                else:  #    (code=='2')
+                else:  # (code=='2')
                     players = start_status.get_players()
                     local_player_id = start_status.get_local_id()
                     self.board.start_match(players, local_player_id)
                     game_state = self.board.get_estado()
                     self.update_gui(game_state)
                     messagebox.showinfo(message=start_status.get_message())
-                    
+
     def receive_start(self, start_status):
-        self.start_game()  #    use case reset game
+        self.start_game()  # use case reset game
         players = start_status.get_players()
         local_player_id = start_status.get_local_id()
         self.board.start_match(players, local_player_id)
@@ -87,16 +86,56 @@ class PlayerInterface(DogPlayerInterface):
 
     def update_gui(self, game_state):
         self.update_menu_status()
-        jogadores = game_state.get_jogadores()   
-        
-        #TODO implementar pra mostrar a carta dos jogadores
-        #o que tentei aqui NÃO FUNCIONAAAAA D:
-        
-        #Mostra cartas jogadores        
-        
+        jogadores = game_state.get_jogadores()
         # local_player_labels = self.generate_local_player_labels()
         # remote_player_labels = self.generate_remote_player_labels()
-        
+        local_players_cards_labels = []
+        remote_players_cards_labels = []
+
+
+        for jogador in jogadores:
+            if jogador.get_eh_local():
+                for carta in jogador.get_mao_de_cartas():
+                    carta.set_url("./images/blue1.png")
+                    img = ImageTk.PhotoImage(Image.open(carta.get_url()))
+                    cartaM = ttk.Button(
+                        image=img,
+                        padding=5,
+                        compound='bottom',
+                        style='RedCard.TLabel',
+                    )
+                    cartaM.image = img
+                    local_players_cards_labels.append(cartaM)
+                    print(img)
+                    # if jogador.get_mao_de_cartas().index(carta) < 4 and label == local_player_labels[jogador.get_mao_de_cartas().index(carta)+1]:
+                    #     print(label)
+                else:
+                    for i in range(len(jogador.get_mao_de_cartas())):
+                        img = ImageTk.PhotoImage(Image.open(jogador.get_mao_de_cartas()[i].get_url()))
+                        cartaM = ttk.Button(
+                            image=img,
+                            padding=5,
+                            compound='bottom',
+                            style='RedCard.TLabel',
+                        )
+                        cartaM.image = img
+                        remote_players_cards_labels.append(cartaM)
+                        print(img)
+
+
+
+        self.local_player_hand.grid(row = 1, column = 0)
+        self.remote_player_hand.grid(row = 0, column = 0)
+        # for carta in local_players_cards_labels:
+        #     carta.pack(side='left', fill='both')
+
+        # TODO implementar pra mostrar a carta dos jogadores
+        # o que tentei aqui NÃO FUNCIONAAAAA D:
+
+        # Mostra cartas jogadores
+
+
+
         # for jogador in jogadores:
         #     if jogador.get_eh_local():
         #         for i in range(len(jogador.get_mao_de_cartas())):
@@ -112,10 +151,9 @@ class PlayerInterface(DogPlayerInterface):
         #             label = remote_player_labels[i]
         #             label.configure(image = img)
         #             label.grid(row = 1, column = i)
-        
+
         # self.local_player_hand.grid(row = 1, column = 0)
         # self.remote_player_hand.grid(row = 0, column = 0)
-        
 
     def update_menu_status(self):
         match_status = self.board.get_estado().get_status()
@@ -127,37 +165,35 @@ class PlayerInterface(DogPlayerInterface):
             self.menu_file.entryconfigure("Iniciar jogo", state="normal")
         else:
             self.menu_file.entryconfigure("Iniciar jogo", state="disabled")
-            
+
     def selecionar_carta(self, event, carta):
         mensagem = self.board.selecionar_carta(carta)
         if mensagem == "DAR_DICA":
-            #TODO implementar fluxo dar dica:
-                #Mostrar popup na tela com duas opcoes: dica de numero ou dica de cor
-                #O tipo de dica é o que vier dessa entrada                            
-            tipo_de_dica = '' #TipoDeDica.Cor OU TipoDeDica.Numero
+            # TODO implementar fluxo dar dica:
+            # Mostrar popup na tela com duas opcoes: dica de numero ou dica de cor
+            # O tipo de dica é o que vier dessa entrada
+            tipo_de_dica = ''  # TipoDeDica.Cor OU TipoDeDica.Numero
             mensagem = self.board.dar_dica(carta, tipo_de_dica)
             if mensagem != "":
                 return
-                #TODO Mostrar pop-up na tela com a mensagem recebida
-            else: 
+                # TODO Mostrar pop-up na tela com a mensagem recebida
+            else:
                 game_state = self.board.get_estado()
                 self.update_gui(game_state)
-        else: 
-            #TODO implementar fluxo selecionar ou descartar carta:
-                #Mostrar popup na tela com duas opcoes: descartar a carta ou jogar a carta
-                #A opcao selecionada é a escolhida pelo jogador na tela
+        else:
+            # TODO implementar fluxo selecionar ou descartar carta:
+            # Mostrar popup na tela com duas opcoes: descartar a carta ou jogar a carta
+            # A opcao selecionada é a escolhida pelo jogador na tela
             opcao_selecionada = ''
             if opcao_selecionada == "JOGAR_CARTA":
                 self.board.jogar_carta(carta)
                 game_state = self.board.get_estado()
                 self.update_gui(game_state)
-            else: 
+            else:
                 mensagem = self.board.descartar_carta(carta)
                 if mensagem != "":
-                    #TODO Mostrar pop-up na tela com a mensagem recebida
+                    # TODO Mostrar pop-up na tela com a mensagem recebida
                     return
-                else: 
+                else:
                     game_state = self.board.get_estado()
                     self.update_gui(game_state)
-                
-                                    
