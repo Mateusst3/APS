@@ -3,6 +3,7 @@ import json
 from urllib.parse import urldefrag
 import requests
 from dog.start_status import StartStatus
+import jsonpickle
 
 
 class DogProxy:
@@ -97,10 +98,11 @@ class DogProxy:
                 self.dog_actor.receive_start(start_status)
 
     def send_move(self, a_move):
-        url = self.url + "move/"
-        json_move = json.dumps(str(a_move))  # convert move to json
+        url = self.url + "move/"     
+        json_move = jsonpickle.encode(a_move)  # convert move to json
         post_data = {"player_id": self.player_id, "game_id": self.game_id, "move": json_move}
         resp = requests.post(url, data=post_data)
+        a_move = a_move.__dict__
         if a_move["_InterfaceImage__match_status"] == "next":
             self.status = 3  #   pass the turn and start looking for a move
         elif a_move["_InterfaceImage__match_status"] == "finished":

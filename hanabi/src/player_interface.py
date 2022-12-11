@@ -312,8 +312,7 @@ class PlayerInterface(DogPlayerInterface):
         else:
             game_state = self.board.get_estado()
             self.update_gui(game_state)
-            print(game_state.__dict__)
-            self.dog_server_interface.send_move(game_state.__dict__)
+            self.dog_server_interface.send_move(game_state)
             
     def popup_jogar_descartar_carta(self, carta):       
         popup = Toplevel()
@@ -334,8 +333,7 @@ class PlayerInterface(DogPlayerInterface):
         self.board.jogar_carta(carta)
         game_state = self.board.get_estado()
         self.update_gui(game_state)
-        print(type(game_state.__dict__))
-        self.dog_server_interface.send_move(game_state.__dict__)
+        self.dog_server_interface.send_move(game_state)
         
     def descartar_carta(self, popup, carta):
         #DELETAR DEPOIS
@@ -348,8 +346,7 @@ class PlayerInterface(DogPlayerInterface):
         else:
             game_state = self.board.get_estado()
             self.update_gui(game_state)
-            print(type(game_state.__dict__))
-            self.dog_server_interface.send_move(game_state.__dict__)
+            self.dog_server_interface.send_move(game_state)
           
 
     def selecionar_carta(self, carta):
