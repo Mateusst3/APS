@@ -30,7 +30,7 @@ class Mesa:
         podeSerJogada = self.validar_carta_jogada(cartaJogada)
         if podeSerJogada:
             self.__estado.jogar_carta(cartaJogada)
-            if cartaJogada.get_numero == 5:
+            if cartaJogada.get_numero() == 5:
                 self.__estado.set_dicas_disponiveis(self.__estado.get_dicas_disponiveis() + 1)
         else:
             self.__estado.set_infracoes_cometidas(self.__estado.get_infracoes_cometidas() + 1)
