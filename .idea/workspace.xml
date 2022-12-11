@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0c64f261-8b0a-4500-aac0-ee71cdec17f8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/hanabi/src/entities/carta.py" beforeDir="false" afterPath="$PROJECT_DIR$/hanabi/src/entities/carta.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hanabi/src/player_interface.py" beforeDir="false" afterPath="$PROJECT_DIR$/hanabi/src/player_interface.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hanabi/src/entities/mesa.py" beforeDir="false" afterPath="$PROJECT_DIR$/hanabi/src/entities/mesa.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
