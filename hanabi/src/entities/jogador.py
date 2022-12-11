@@ -7,6 +7,9 @@ class Jogador:
         self.__posicao = posicao
         self.__jogador_id = id
         self.__eh_local = False
+    
+    def __repr__(self):
+        return str(self.__dict__)
 
     def get_nome(self):
         return self.__nome

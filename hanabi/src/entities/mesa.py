@@ -33,7 +33,7 @@ class Mesa:
                 self.__estado.set_dicas_disponiveis(self.__estado.get_dicas_disponiveis() + 1)
         else:
             self.__estado.set_infracoes_cometidas(self.__estado.get_infracoes_cometidas() + 1)
-            self.__estado.descartar_carta(cartaJogada)
+            self.__estado.descartar_carta(cartaJogada, True)
 
     def validar_carta_jogada(self, cartaJogada: Carta):
         cor = cartaJogada.get_cor()
@@ -55,7 +55,7 @@ class Mesa:
 
     def descartar_carta(self, carta: Carta):
         if self.__estado.get_dicas_disponiveis() < 8:
-            self.__estado.descartar_carta(carta)
+            self.__estado.descartar_carta(carta, False)
             return ""
         else:
             return "Não há dicas a serem recuperadas, portanto você não pode descartar nenhuma carta. Escolha outra ação."

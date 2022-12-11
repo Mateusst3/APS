@@ -18,6 +18,10 @@ class InterfaceImage:
         self.__partida_encerrada = False
         self.__dicas_disponiveis = 8
         self.__infracoes_cometidas = 0
+        self.__match_status = "next"
+        
+    def __repr__(self):
+        return str(self.__dict__)
         
     def get_partida_encerrada(self):
         return self.__partida_encerrada
@@ -90,8 +94,9 @@ class InterfaceImage:
                 self.__area_compra.pop(i)
             jogador.set_mao_de_cartas(baralho_jogador)
                 
-    def descartar_carta(self, carta : Carta):
-        self.set_dicas_disponiveis(self.get_dicas_disponiveis() + 1)
+    def descartar_carta(self, carta : Carta, eh_infracao : bool):
+        if not eh_infracao:
+            self.set_dicas_disponiveis(self.get_dicas_disponiveis() + 1)
         self.adiciona_area_descarte(carta)
         jogador = self.get_jogador_local()
         jogador.jogar_descartar_carta(carta)               
@@ -143,7 +148,8 @@ class InterfaceImage:
                         jogaram_ultima_rodada += 1
                 if jogaram_ultima_rodada == len(self._jogadores):
                     self.define_mensagem_fim_de_jogo()
-                    self.__partida_encerrada = True                               
+                    self.__partida_encerrada = True   
+                    self.__match_status = "finished"                            
             else:
                 self.__ultima_rodada = True
         return

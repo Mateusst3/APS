@@ -63,7 +63,7 @@ class PlayerInterface(DogPlayerInterface):
         if match_status == 1:
             answer = messagebox.askyesno("START", "Deseja iniciar uma nova partida?")
             if answer:
-                start_status = self.dog_server_interface.start_match(1)
+                start_status = self.dog_server_interface.start_match(2)
                 code = start_status.get_code()
                 message = start_status.get_message()
                 if code == "0" or code == "1":
@@ -104,8 +104,7 @@ class PlayerInterface(DogPlayerInterface):
         self.mostrar_cartas_jogadas(game_state)
         self.mostra_baralho_compra(game_state)
         self.mostra_dicas_e_infracoes(game_state)
-        self.mostra_baralho_jogadores(game_state, jogadores)
-        #self.dog_server_interface.send_move(game_state)
+        self.mostra_baralho_jogadores(jogadores)
         
     def mostra_baralho_jogadores(self, jogadores):
         self.local_player_hand = Frame(self.main_window, width=550, height=300)
@@ -116,27 +115,29 @@ class PlayerInterface(DogPlayerInterface):
         
         for jogador in jogadores:
             if jogador.get_eh_local():
-                for carta in jogador.get_mao_de_cartas():
+                for i in range(len(jogador.get_mao_de_cartas())):
+                    carta = jogador.get_mao_de_cartas()[i]
                     img = ImageTk.PhotoImage(Image.open(carta.get_url()).resize((125, 200)))
                     cartaM = ttk.Button(
                         self.local_player_hand,
                         image=img,
                         padding=5,
                         compound='bottom',
-                        command = lambda : self.selecionar_carta(carta)
+                        command = lambda carta = carta : self.selecionar_carta(carta)
                     )
                     cartaM.image = img
-                    cartaM.pack(side='left', fill='both')
+                    cartaM.pack(side='left', fill='both')  
 
             else:
-                for carta in jogador.get_mao_de_cartas():
+                for i in range(len(jogador.get_mao_de_cartas())):
+                    carta = jogador.get_mao_de_cartas()[i]
                     img = ImageTk.PhotoImage(Image.open(carta.get_url()).resize((125, 200)))
                     cartaM = ttk.Button(
                         self.remote_player_hand,
                         image=img,
                         padding=5,
                         compound='bottom',
-                        command = lambda : self.selecionar_carta(carta)
+                        command = lambda carta = carta : self.selecionar_carta(carta)
                     )
                     cartaM.image = img
                     cartaM.pack(side='left', fill='both')
@@ -311,6 +312,8 @@ class PlayerInterface(DogPlayerInterface):
         else:
             game_state = self.board.get_estado()
             self.update_gui(game_state)
+            print(game_state.__dict__)
+            self.dog_server_interface.send_move(game_state.__dict__)
             
     def popup_jogar_descartar_carta(self, carta):       
         popup = Toplevel()
@@ -331,6 +334,8 @@ class PlayerInterface(DogPlayerInterface):
         self.board.jogar_carta(carta)
         game_state = self.board.get_estado()
         self.update_gui(game_state)
+        print(type(game_state.__dict__))
+        self.dog_server_interface.send_move(game_state.__dict__)
         
     def descartar_carta(self, popup, carta):
         #DELETAR DEPOIS
@@ -342,7 +347,9 @@ class PlayerInterface(DogPlayerInterface):
             messagebox.showinfo(message=mensagem)
         else:
             game_state = self.board.get_estado()
-            self.update_gui(game_state)       
+            self.update_gui(game_state)
+            print(type(game_state.__dict__))
+            self.dog_server_interface.send_move(game_state.__dict__)
           
 
     def selecionar_carta(self, carta):

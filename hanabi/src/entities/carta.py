@@ -12,6 +12,9 @@ class Carta:
         self.__numero = numero
         self.__recebeu_dica_numero = False
         self.__url = ""
+        
+    def __repr__(self):
+        return str(self.__dict__)
 
     def get_cor(self):
         return self.__cor

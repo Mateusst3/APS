@@ -7,3 +7,6 @@ class Cor(Enum):
     blue = 3
     yellow = 4
     white = 5
+    
+    def __repr__(self):
+            return str(self.__dict__)
