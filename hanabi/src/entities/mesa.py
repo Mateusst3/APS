@@ -43,7 +43,6 @@ class Mesa:
             self.__time.cometer_infracao()
             self.__estado.descartar_carta()           
             
-        
     def validar_carta_jogada(self, cartaJogada : Carta):
         cor = cartaJogada.get_cor()
         ultimoNumeroJogado = self.get_numero_carta_mais_alta_da_cor(cor)

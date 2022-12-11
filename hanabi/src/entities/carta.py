@@ -2,6 +2,7 @@ import tkinter as tk
 import random
 
 from Enumerations.TipoDeDica import TipoDeDica
+from Enumerations.CorDaCarta import Cor
 
 class Carta:
 
@@ -12,11 +13,10 @@ class Carta:
         self.__recebeu_dica_numero = False
         self.__url = ""
 
-
     def get_cor(self):
         return self.__cor
 
-    def self_cor(self, cor: str):
+    def self_cor(self, cor: Cor):
         self.__cor = cor
 
     def get_numero(self):
