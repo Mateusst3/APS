@@ -16,7 +16,7 @@ class Carta:
     def get_cor(self):
         return self.__cor
 
-    def self_cor(self, cor: Cor):
+    def set_cor(self, cor: Cor):
         self.__cor = cor
 
     def get_numero(self):
