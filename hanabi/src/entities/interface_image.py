@@ -92,7 +92,7 @@ class InterfaceImage:
                 
     def descartar_carta(self, carta : Carta):
         self.adiciona_area_descarte(carta)
-        jogador = self.get_jogador_atual()
+        jogador = self.get_jogador_local()
         jogador.jogar_descartar_carta(carta)               
         if len(self.__area_compra) > 0:
             self.comprar_carta()
@@ -103,24 +103,25 @@ class InterfaceImage:
         self.__area_descarte.append(carta)
                     
     def encerrar_turno_jogador(self):
-        jogador = self.get_jogador_atual()
-        jogador.set_seu_turno(False)
+        self.set_status(StatusPartida.NOT_SEU_TURNO_EM_ANDAMENTO.value)
+        jogador = self.get_jogador_local()
         if self.__ultima_rodada:
             jogador.set_jogou_ultimo_turno(True)
         self.carrega_imagem_cartas()
                 
     def jogar_carta(self, carta : Carta):
-        jogador = self.get_jogador_atual()
+        jogador = self.get_jogador_local()
         jogador.jogar_descartar_carta(carta)
         self.__area_cartas_jogadas.append(carta)
         
-    def get_jogador_atual(self):
+    def get_jogador_local(self):
         for jogador in self.__jogadores:
-            if jogador.get_seu_turno():
-                return Jogador
+            if jogador.get_eh_local():
+                return jogador
+        return 0
         
     def comprar_carta(self):
-        jogador = self.get_jogador_atual()
+        jogador = self.get_jogador_local()
         cartaComprada = self.__area_compra[random.randrange(len(self.__area_compra))]
         self.__area_compra.remove(cartaComprada)
         jogador.get_mao_de_cartas().append(cartaComprada)
@@ -166,8 +167,7 @@ class InterfaceImage:
             jogador = Jogador(jogadores[i][0], jogadores[i][1], jogadores[i][2])
             if jogador.get_id() == id:
                 jogador.set_eh_local(True)
-                if jogador.get_posicao == 1:
-                    jogador.set_seu_turno(True)
+                if jogador.get_posicao() == '1':
                     self.set_status(3)    
                 else:
                     self.set_status(5)
