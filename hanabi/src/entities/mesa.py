@@ -18,7 +18,7 @@ class Mesa:
         self.__estado = estado
 
     def dar_dica(self, carta: Carta, tipo_de_dica: TipoDeDica):
-        if self.__time.get_dicas_disponiveis() > 0:
+        if self.__estado.get_dicas_disponiveis() > 0:
             carta.receberDica(tipo_de_dica)
             self.__estado.set_dicas_disponiveis(self.__estado.get_dicas_disponiveis() - 1)
             self.__estado.encerrar_turno_jogador()
@@ -55,7 +55,7 @@ class Mesa:
         self.__estado.comprar_carta()
 
     def descartar_carta(self, carta: Carta):
-        if self.__time.get_dicas_disponiveis() < 8:
+        if self.__estado.get_dicas_disponiveis() < 8:
             self.__estado.descartar_carta(carta)
             return ""
         else:
