@@ -124,32 +124,6 @@ class PlayerInterface(DogPlayerInterface):
 
         self.local_player_hand.grid(row=1, column=0)
         self.remote_player_hand.grid(row=0, column=0)
-        # for carta in local_players_cards_labels:
-        #     carta.pack(side='left', fill='both')
-
-        # TODO implementar pra mostrar a carta dos jogadores
-        # o que tentei aqui NÃO FUNCIONAAAAA D:
-
-        # Mostra cartas jogadores
-
-        # for jogador in jogadores:
-        #     if jogador.get_eh_local():
-        #         for i in range(len(jogador.get_mao_de_cartas())):
-        #             img = ImageTk.PhotoImage(Image.open(jogador.get_mao_de_cartas()[i].get_url()))
-        #             label = local_player_labels[i]
-        #             label.configure(image = img)
-        #             label.grid(row = 1, column = i)
-        #             if i < 4 and label == local_player_labels[i+1]:
-        #                 print(label)
-        #     else:
-        #         for i in range(len(jogador.get_mao_de_cartas())):
-        #             img = ImageTk.PhotoImage(Image.open(jogador.get_mao_de_cartas()[i].get_url()))
-        #             label = remote_player_labels[i]
-        #             label.configure(image = img)
-        #             label.grid(row = 1, column = i)
-
-        # self.local_player_hand.grid(row = 1, column = 0)
-        # self.remote_player_hand.grid(row = 0, column = 0)
 
     def update_menu_status(self):
         match_status = self.board.get_estado().get_status()
@@ -183,6 +157,7 @@ class PlayerInterface(DogPlayerInterface):
             opcao_selecionada = ''
             if opcao_selecionada == "JOGAR_CARTA":
                 self.board.jogar_carta(carta)
+                self.board.receber_jogada()
                 game_state = self.board.get_estado()
                 self.update_gui(game_state)
             else:
