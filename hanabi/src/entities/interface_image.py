@@ -16,6 +16,8 @@ class InterfaceImage:
         self.__jogadores = []
         self.__ultima_rodada = False
         self.__partida_encerrada = False
+        self.__dicas_disponiveis = 8
+        self.__infracoes_cometidas = 0
         
     def get_partida_encerrada(self):
         return self.__partida_encerrada
@@ -55,6 +57,18 @@ class InterfaceImage:
         
     def get_jogadores(self):
         return self.__jogadores
+
+    def get_dicas_disponiveis(self):
+        return self.__dicas_disponiveis
+
+    def set_dicas_disponiveis(self, dicasDisponiveis: int):
+        self.__dicas_disponiveis = dicasDisponiveis
+
+    def set_infracoes_cometidas(self, infracoes_cometidas: int):
+        self.__infracoes_cometidas = infracoes_cometidas
+        
+    def get_infracoes_cometidas(self):
+        return self.__infracoes_cometidas
        
     def constroi_baralho_inicial(self):
         baralho_compra = self.get_area_compra()
@@ -77,20 +91,25 @@ class InterfaceImage:
             jogador.set_mao_de_cartas(baralho_jogador)
                 
     def descartar_carta(self, carta : Carta):
-        self.__area_descarte.append(carta)
+        self.adiciona_area_descarte(carta)
         jogador = self.get_jogador_atual()
-        for cartaJogador in jogador.get_mao_de_cartas():
-            if cartaJogador == carta:
-                jogador.get_mao_de_cartas().remove(carta)
+        jogador.jogar_descartar_carta(carta)               
+        if len(self.__area_compra) > 0:
+            self.comprar_carta()
         self.encerrar_turno_jogador()
+
+    def adiciona_area_descarte(self, carta):
+        self.__area_descarte.append(carta)
                     
     def encerrar_turno_jogador(self):
         jogador = self.get_jogador_atual()
         jogador.set_seu_turno(False)
+        if self.__ultima_rodada:
+            jogador.set_jogou_ultimo_turno(True)
                 
     def jogar_carta(self, carta : Carta):
         jogador = self.get_jogador_atual()
-        jogador.get_mao_de_cartas().remove(carta)
+        jogador.jogar_descartar_carta(carta)
         self.__area_cartas_jogadas.append(carta)
         
     def get_jogador_atual(self):
@@ -100,7 +119,7 @@ class InterfaceImage:
         
     def comprar_carta(self):
         jogador = self.get_jogador_atual()
-        cartaComprada = self.__area_compra
+        cartaComprada = self.__area_compra[random.randrange(len(self.__area_compra))]
         self.__area_compra.remove(cartaComprada)
         jogador.get_mao_de_cartas().append(cartaComprada)
         

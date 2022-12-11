@@ -28,9 +28,11 @@ class Jogador:
         self.__jogou_ultimo_turno = jogou
 
     def jogar_descartar_carta(self, carta_jogada):
-        for carta in self.__mao_de_cartas:
-            if carta == carta_jogada:
-                self.__mao_de_cartas.remove(carta)
+        index = 0
+        for i in range(len(self.get_mao_de_cartas())):
+            if self.get_mao_de_cartas()[i] == carta_jogada:
+                index = i
+        self.__mao_de_cartas.pop(index)
 
     def comprar_carta(self, carta):
         self.__mao_de_cartas.append(carta)

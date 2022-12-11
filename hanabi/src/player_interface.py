@@ -285,6 +285,7 @@ class PlayerInterface(DogPlayerInterface):
             opcao_selecionada = ''
             if opcao_selecionada == "JOGAR_CARTA":
                 self.board.jogar_carta(carta)
+                self.board.receber_jogada()
                 game_state = self.board.get_estado()
                 self.update_gui(game_state)
             else:
