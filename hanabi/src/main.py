@@ -3,7 +3,6 @@
 import tkinter as tk
 from functools import partial
 from tkinter import ttk
-from entities.time import Time
 from entities.jogador import Jogador
 from dog.dog_actor import DogActor
 import player_interface

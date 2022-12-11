@@ -34,7 +34,7 @@ class Carta:
     def get_recebeu_dica_de_numero(self):
         return self.__recebeu_dica_numero
 
-    def set_recebeu_dica_de_cor(self, recebeu_dica_numero: bool):
+    def set_recebeu_dica_de_numero(self, recebeu_dica_numero: bool):
         self.__recebeu_dica_numero = recebeu_dica_numero
 
     def get_url(self):
