@@ -82,3 +82,7 @@ class Mesa:
 
     def reset(self):
         self.__estado.reset()
+        
+    def receber_notificacao_desistencia(self):
+        self.__estado.set_status(StatusPartida.DESISTENCIA.value)
+        self.__estado.reset()

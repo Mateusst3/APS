@@ -92,9 +92,11 @@ class PlayerInterface(DogPlayerInterface):
             self.update_gui(game_state)
 
     def receive_withdrawal_notification(self):
-        self.board.get_estado().set_status(StatusPartida.DESISTENCIA.value)
+        self.board.receber_notificacao_desistencia()
         game_state = self.board.get_estado()
         self.update_gui(game_state)
+        messagebox.showinfo(message = "O jogador desistiu. Partida encerrada!")
+        
 
     def update_gui(self, game_state):
         self.update_menu_status()
@@ -150,14 +152,6 @@ class PlayerInterface(DogPlayerInterface):
                                           text='Cartas descartadas',
                                           font=font.Font(size=12, weight='bold'))
         titulo_cartas_descartadas.grid(row=0, column=0)
-
-        # DELETAR {
-        # cartas_descartadas = [Carta(Cor.red, 2),
-        #                       Carta(Cor.blue, 5),
-        #                       Carta(Cor.blue, 2),
-        #                       Carta(Cor.blue, 2),
-        #                       ]
-        # DELETAR }
 
         textos = ['' for i in range(5)]
 
@@ -362,3 +356,5 @@ class PlayerInterface(DogPlayerInterface):
             
     def receive_move(self, a_move):
         self.board.receber_jogada(a_move)
+        game_state = self.board.get_estado()
+        self.update_gui(game_state)

@@ -20,6 +20,9 @@ class InterfaceImage:
         self.__infracoes_cometidas = 0
         self.__match_status = "next"
         
+    def get_match_status(self):
+        return self.__match_status
+        
     def __repr__(self):
         return str(self.__dict__)
         
@@ -207,6 +210,35 @@ class InterfaceImage:
             if jogador.get_eh_local() and jogador.is_carta_no_baralho(carta):
                 mensagem = "SELECIONAR_ESPAÇO"
         return mensagem
+    
+    def receber_jogada(self, jogada):
+        self.set_area_cartas_jogadas(jogada.get_area_cartas_jogadas())
+        self.set_area_compra(jogada.get_area_compra())
+        self.set_area_descarte(jogada.get_area_descarte())
+        self.set_dicas_disponiveis(jogada.get_dicas_diponiveis())
+        self.set_infracoes_cometidas(jogada.get_infracoes_cometidas())
+        
+        if jogada.get_match_status() == "next":
+            self.set_status(StatusPartida.SEU_TURNO_EM_ANDAMENTO.value)
+        else: 
+            self.set_status(StatusPartida.FINALIZADO.value)
+            
+        for local_jogador_status in self.get_jogadores():
+            for remote_jogador_status in jogada.get_jogadores():
+                if local_jogador_status.get_id() == remote_jogador_status.get_id():
+                    local_jogador_status.set_mao_de_cartas(remote_jogador_status.get_mao_de_cartas())
+                
+    def reset(self):
+        self.set_area_cartas_jogadas([])
+        self.set_area_compra([])
+        self.set_area_descarte([])
+        self.set_status(StatusPartida.AGUARDANDO_INICIO.value)
+        self.set_jogadores([])
+        self.set_dicas_disponiveis(8)
+        self.set_infracoes_cometidas(0)
+        self.set_mensagem("")
+        
+            
                 
                     
         
