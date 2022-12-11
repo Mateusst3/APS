@@ -107,7 +107,7 @@ class PlayerInterface(DogPlayerInterface):
         self.mostra_baralho_jogadores(game_state, jogadores)
         #self.dog_server_interface.send_move(game_state)
         
-    def mostra_baralho_jogadores(self, game_state, jogadores):
+    def mostra_baralho_jogadores(self, jogadores):
         self.local_player_hand = Frame(self.main_window, width=550, height=300)
         self.remote_player_hand = Frame(self.main_window, width=550, height=300)
         
@@ -355,3 +355,6 @@ class PlayerInterface(DogPlayerInterface):
                 self.popup_jogar_descartar_carta(carta)
         else: 
             messagebox.showinfo(message = "Aguarde seu turno para jogar!")
+            
+    def receive_move(self, a_move):
+        self.board.receber_jogada(a_move)
