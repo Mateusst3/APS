@@ -11,18 +11,18 @@ class Mesa:
     def __init__(self):
         self.__time = Time()
         self.__estado = InterfaceImage()
+
+    def get_time(self):
+        return self.__time
         
     def set_time(self, time : Time):
         self.__time = time
-        
-    def get_time(self):
-        return self.__time
+
+    def get_estado(self):
+        return self.__estado
     
     def set_estado(self, estado : InterfaceImage):
         self.__estado = estado
-        
-    def get_estado(self):
-        return self.__estado
     
     def dar_dica(self, carta : Carta, tipo_de_dica : TipoDeDica): 
         if self.__time.get_dicas_disponiveis() > 0:

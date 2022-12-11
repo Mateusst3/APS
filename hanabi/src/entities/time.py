@@ -20,18 +20,18 @@ class Time:
         
     def get_infracoes_cometidas(self):
         return self.__infracoesCometidas
-    
-    def set_pontuacao_final(self, pontuacao : int):
-        self.__pontuacaoFinal = pontuacao
-        
+
     def get_pontuacao_final(self):
         return self.__pontuacaoFinal
     
-    def set_esta_na_ultima_rodada(self, estaNaUltimaRodada : bool):
-        self.__estaNaUltimaRodada = estaNaUltimaRodada
-        
+    def set_pontuacao_final(self, pontuacao : int):
+        self.__pontuacaoFinal = pontuacao
+
     def get_esta_na_ultima_rodada(self):
         return self.__estaNaUltimaRodada
+    
+    def set_esta_na_ultima_rodada(self, estaNaUltimaRodada : bool):
+        self.__estaNaUltimaRodada = estaNaUltimaRodada
     
     def recuperar_dica(self):
         self.__dicasDisponiveis += 1
