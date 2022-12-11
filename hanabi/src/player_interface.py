@@ -29,19 +29,15 @@ class PlayerInterface(DogPlayerInterface):
     def fill_main_window(self):
         self.main_window.title("Hanabi")
         self.main_window.geometry("1280x720")
-        self.main_window.resizable(False, False)
+        #self.main_window.resizable(False, False)
         
         self.discard_pile = Frame(self.main_window, width=200, height=300)
         self.played_cards = Frame(self.main_window, width=500, height=200)
-        self.local_player_hand = Frame(self.main_window, width=550, height=300, bg="gold3")
-        self.remote_player_hand = Frame(self.main_window, width=550, height=300, bg="red")
         self.baralho_de_compras = Frame(self.main_window, width=200, height=200)
         self.dicas_e_infracoes = Frame(self.main_window, width=200, height=200)
 
-        self.remote_player_hand.grid(row=0, column=0)
         self.discard_pile.grid(row=1, column=1)
         self.played_cards.grid(row=1, column=0)
-        self.local_player_hand.grid(row=2, column=0)
         self.baralho_de_compras.grid(row=0, column=1)
         self.dicas_e_infracoes.grid(row=2, column=1)
 
@@ -112,6 +108,12 @@ class PlayerInterface(DogPlayerInterface):
         #self.dog_server_interface.send_move(game_state)
         
     def mostra_baralho_jogadores(self, game_state, jogadores):
+        self.local_player_hand = Frame(self.main_window, width=550, height=300)
+        self.remote_player_hand = Frame(self.main_window, width=550, height=300)
+        
+        self.remote_player_hand.grid(row=0, column=0)       
+        self.local_player_hand.grid(row=2, column=0)
+        
         for jogador in jogadores:
             if jogador.get_eh_local():
                 for carta in jogador.get_mao_de_cartas():
@@ -149,11 +151,11 @@ class PlayerInterface(DogPlayerInterface):
         titulo_cartas_descartadas.grid(row=0, column=0)
 
         # DELETAR {
-        cartas_descartadas = [Carta(Cor.red, 2),
-                              Carta(Cor.blue, 5),
-                              Carta(Cor.blue, 2),
-                              Carta(Cor.blue, 2),
-                              ]
+        # cartas_descartadas = [Carta(Cor.red, 2),
+        #                       Carta(Cor.blue, 5),
+        #                       Carta(Cor.blue, 2),
+        #                       Carta(Cor.blue, 2),
+        #                       ]
         # DELETAR }
 
         textos = ['' for i in range(5)]
@@ -321,7 +323,7 @@ class PlayerInterface(DogPlayerInterface):
         button1.pack(side='bottom', pady=10)
         button2 = Button(popup, text="Jogar carta", command = lambda : self.jogar_carta(popup, carta))
         button2.pack(side='bottom', pady=10)
-        button3 = Button(popup, text="Descartar carta", command= lambda : self.clicar_no_botao_de_dica(popup, carta, TipoDeDica.NUMERO))
+        button3 = Button(popup, text="Descartar carta", command= lambda : self.descartar_carta(popup, carta))
         button3.pack(side='bottom', pady=10)
         
     def jogar_carta(self, popup, carta):
@@ -331,6 +333,9 @@ class PlayerInterface(DogPlayerInterface):
         self.update_gui(game_state)
         
     def descartar_carta(self, popup, carta):
+        #DELETAR DEPOIS
+        self.board.get_estado().set_dicas_disponiveis(5)
+        #--------------------------------------
         popup.destroy()
         mensagem = self.board.descartar_carta(carta)
         if mensagem != "":

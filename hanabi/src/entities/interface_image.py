@@ -91,13 +91,14 @@ class InterfaceImage:
             jogador.set_mao_de_cartas(baralho_jogador)
                 
     def descartar_carta(self, carta : Carta):
+        self.set_dicas_disponiveis(self.get_dicas_disponiveis() + 1)
         self.adiciona_area_descarte(carta)
         jogador = self.get_jogador_local()
         jogador.jogar_descartar_carta(carta)               
         if len(self.__area_compra) > 0:
             self.comprar_carta()
         self.encerrar_turno_jogador()
-        self.avaliarFimDeJogo
+        self.avaliar_fim_de_jogo()
 
     def adiciona_area_descarte(self, carta):
         self.__area_descarte.append(carta)
@@ -113,6 +114,7 @@ class InterfaceImage:
         jogador = self.get_jogador_local()
         jogador.jogar_descartar_carta(carta)
         self.__area_cartas_jogadas.append(carta)
+        self.encerrar_turno_jogador()
         
     def get_jogador_local(self):
         for jogador in self.__jogadores:
