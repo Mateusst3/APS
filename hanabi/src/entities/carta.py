@@ -43,7 +43,7 @@ class Carta:
     def set_url(self, url):
         self.__url = url
     
-    def receberDica(self, tipoDeDica : TipoDeDica):
+    def receber_dica(self, tipoDeDica : TipoDeDica):
         if tipoDeDica == TipoDeDica.COR:
             self.__recebeu_dica_cor = True
         else: 

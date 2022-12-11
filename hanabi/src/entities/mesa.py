@@ -1,6 +1,5 @@
 from entities.carta import Carta
 from entities.interface_image import InterfaceImage
-from entities.jogador import Jogador
 from Enumerations.CorDaCarta import Cor
 from Enumerations.TipoDeDica import TipoDeDica
 from Enumerations.StatusPartida import StatusPartida
@@ -19,7 +18,7 @@ class Mesa:
 
     def dar_dica(self, carta: Carta, tipo_de_dica: TipoDeDica):
         if self.__estado.get_dicas_disponiveis() > 0:
-            carta.receberDica(tipo_de_dica)
+            carta.receber_dica(tipo_de_dica)
             self.__estado.set_dicas_disponiveis(self.__estado.get_dicas_disponiveis() - 1)
             self.__estado.encerrar_turno_jogador()
             return ""
@@ -61,9 +60,10 @@ class Mesa:
         else:
             return "Não há dicas a serem recuperadas, portanto você não pode descartar nenhuma carta. Escolha outra ação."
 
-    def receber_notificacao_de_desistencia():
-        # TODO implementar restart
-        return
+    def receber_notificacao_de_desistencia(self):
+        self.reset()
+        self.get_estado().set_jogadores([])
+        self.get_estado().set_status(StatusPartida.AGUARDANDO_INICIO.value)
 
     def start_match(self, jogadores, id: int):
         self.__estado.start_match(jogadores, id)
@@ -77,14 +77,8 @@ class Mesa:
     def selecionar_carta(self, carta):
         return self.__estado.avaliar_carta_selecionada(carta)
 
-    def receber_jogada(self):
-        self.__estado.encerrar_turno_jogador()
+    def receber_jogada(self, jogada):
+        self.__estado.receber_jogada(jogada)
 
-    def reset_game(self):
-        for jogador in self.__estado.get_jogadores():
-            jogador.set_mao_de_cartas([])
-        self.__estado.set_area_cartas_jogadas([])
-        self.__estado.set_area_descarte([])
-        self.__estado.set_area_compra([])
-        self.__estado.set_status(StatusPartida.AGUARDANDO_INICIO.value)
-        self.__estado.set_ultima_rodada(False)
+    def reset(self):
+        self.__estado.reset()
