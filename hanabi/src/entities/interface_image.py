@@ -107,6 +107,7 @@ class InterfaceImage:
         jogador.set_seu_turno(False)
         if self.__ultima_rodada:
             jogador.set_jogou_ultimo_turno(True)
+        self.carrega_imagem_cartas()
                 
     def jogar_carta(self, carta : Carta):
         jogador = self.get_jogador_atual()
