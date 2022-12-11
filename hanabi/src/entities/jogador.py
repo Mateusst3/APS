@@ -2,10 +2,9 @@ class Jogador:
 
     def __init__(self, nome, id, posicao):
         self.__nome = nome
-        self.__mao_de_cartas = None
-        self.__jogou_ultimo_turno = None
+        self.__mao_de_cartas = []
+        self.__jogou_ultimo_turno = False
         self.__posicao = posicao
-        self.__seu_turno = False
         self.__jogador_id = id
         self.__eh_local = False
 
@@ -39,13 +38,7 @@ class Jogador:
 
     def get_posicao(self):
         return self.__posicao
-
-    def get_seu_turno(self):
-        return self.__seu_turno
-
-    def set_seu_turno(self, seu_turno__seu_turno: bool):
-        self.__seu_turno = seu_turno__seu_turno
-        
+       
     def get_id(self):
         return self.__jogador_id
     
@@ -63,3 +56,8 @@ class Jogador:
             if carta_jogador == carta:
                 return True
         return False
+
+    def reset(self):
+        self.set_mao_de_cartas([])
+        self.set_jogou_ultimo_turno(False)
+
