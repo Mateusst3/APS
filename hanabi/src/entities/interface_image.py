@@ -97,6 +97,7 @@ class InterfaceImage:
         if len(self.__area_compra) > 0:
             self.comprar_carta()
         self.encerrar_turno_jogador()
+        self.avaliarFimDeJogo
 
     def adiciona_area_descarte(self, carta):
         self.__area_descarte.append(carta)
@@ -123,11 +124,11 @@ class InterfaceImage:
         self.__area_compra.remove(cartaComprada)
         jogador.get_mao_de_cartas().append(cartaComprada)
         
-    def avaliarFimDeJogo(self, infracoes_cometidas):
+    def avaliar_fim_de_jogo(self):
         if len(self.__area_cartas_jogadas) == 25:
             self.define_mensagem_fim_de_jogo()
             self.__partida_encerrada = True           
-        elif infracoes_cometidas == 3:
+        elif self.__infracoes_cometidas == 3:
             self.__mensagem = "Vocês perderam! O festival foi um fracasso."
             self.__partida_encerrada = True           
         elif len(self.__area_compra) == 0:
