@@ -88,7 +88,7 @@ class Mesa:
         self.__estado.set_status(StatusPartida.DESISTENCIA.value)
         self.__estado.reset()
     
-    sef jogador_local_inicia(self):
+    def jogador_local_inicia(self):
         if self.__estado.get_jogador_local().get_posicao() == '1':
             return True
         return False
