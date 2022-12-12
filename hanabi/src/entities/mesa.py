@@ -1,6 +1,5 @@
 from entities.carta import Carta
 from entities.interface_image import InterfaceImage
-from Enumerations.CorDaCarta import Cor
 from Enumerations.TipoDeDica import TipoDeDica
 from Enumerations.StatusPartida import StatusPartida
 
@@ -42,7 +41,7 @@ class Mesa:
             return True
         return False
 
-    def get_numero_carta_mais_alta_da_cor(self, cor: Cor):
+    def get_numero_carta_mais_alta_da_cor(self, cor: str):
         num_carta_mais_alta = 0
         for carta in self.__estado.get_area_cartas_jogadas():
             if carta.get_cor() == cor:

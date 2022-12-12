@@ -6,7 +6,6 @@ from dog.dog_interface import DogPlayerInterface
 from dog.dog_actor import DogActor
 from entities.mesa import Mesa
 from Enumerations.StatusPartida import StatusPartida
-from Enumerations.CorDaCarta import Cor
 from Enumerations.TipoDeDica import TipoDeDica
 from entities.carta import Carta
 from munch import DefaultMunch
@@ -80,8 +79,8 @@ class PlayerInterface(DogPlayerInterface):
                     print(str(game_state))
                     self.update_gui(game_state)
                     messagebox.showinfo(message=start_status.get_message())
-                if self.board.jogador_local_inicia():
-                    self.dog_server_interface.send_move(game_state.get_move_to_send())
+                    if self.board.jogador_local_inicia():
+                        self.dog_server_interface.send_move(game_state.get_move_to_send())
 
     def receive_start(self, start_status):
         self.start_game() 
@@ -90,6 +89,8 @@ class PlayerInterface(DogPlayerInterface):
         self.board.start_match(players, local_player_id)
         game_state = self.board.get_estado()
         self.update_gui(game_state)
+        if self.board.jogador_local_inicia():
+            self.dog_server_interface.send_move(game_state.get_move_to_send())
 
     def start_game(self):
         match_status = self.board.get_estado().get_status()
@@ -168,13 +169,15 @@ class PlayerInterface(DogPlayerInterface):
         for carta in cartas_descartadas:
             cor_atual = carta.get_cor().value - 1 # Enum inicia no índice 1
             textos[cor_atual] += str(carta.get_numero())
+        
+        cores = {1: "red", 2: "green", 3: "blue", 4: "yellow", 5:"white"}
 
-        for texto, cor in zip(textos, Cor):
+        for texto, i in zip(textos, range(len(cores))):
             texto = list(texto)
             texto.sort()
             texto = ' '.join(texto)
-            linha = Label(self.discard_pile, text=texto, fg=cor.name, font=font.Font(size=12,))
-            linha.grid(row=cor.value, column=0)
+            linha = Label(self.discard_pile, text=texto, fg=cores.get(i+1), font=font.Font(size=12,))
+            linha.grid(row=i+1, column=0)
 
     def mostrar_cartas_jogadas(self, game_state):
         
@@ -194,13 +197,15 @@ class PlayerInterface(DogPlayerInterface):
         #self.board.get_estado().set_area_cartas_jogadas(cartas_jogadas)
         
         cartas_mais_altas = [0 for i in range(5)]
+        
+        cores = {1: "red", 2: "green", 3: "blue", 4: "yellow", 5:"white"}
 
-        for cor in Cor:
-            carta_mais_alta = self.board.get_numero_carta_mais_alta_da_cor(cor)
+        for i in range(len(cores)):
+            carta_mais_alta = self.board.get_numero_carta_mais_alta_da_cor(cores.get(i+1))
             if carta_mais_alta:
-                carta = Carta(cor, carta_mais_alta)
+                carta = Carta(cores.get(i+1), carta_mais_alta)
                 carta.carrega_imagem_carta(True, False)
-                cartas_mais_altas[cor.value-1] = carta
+                cartas_mais_altas[i+1] = carta
 
         for carta in cartas_mais_altas:
             if carta:

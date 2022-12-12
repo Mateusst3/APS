@@ -3,7 +3,6 @@ import random
 from Enumerations.StatusPartida import StatusPartida
 from entities.carta import Carta
 from entities.jogador import Jogador
-from Enumerations.CorDaCarta import Cor
 
 
 class InterfaceImage:
@@ -79,13 +78,14 @@ class InterfaceImage:
        
     def constroi_baralho_inicial(self):
         baralho_compra = self.get_area_compra()
+        cores = {1: "red", 2: "green", 3: "blue", 4: "yellow", 5:"white"}
         for i in range (1,6): #numero
             for j in range (1,6): #cor
-                baralho_compra.append(Carta(Cor(j), i))
+                baralho_compra.append(Carta(cores.get(i), i))
                 if i == 1:
-                    baralho_compra.append(Carta(Cor(j), i))
+                    baralho_compra.append(Carta(cores.get(i), i))
                 if i != 5:
-                    baralho_compra.append(Carta(Cor(j), i))
+                    baralho_compra.append(Carta(cores.get(i), i))
         self.set_area_compra(random.sample(baralho_compra, len(baralho_compra)))
         self.distribui_cartas_pros_jogadores()
         

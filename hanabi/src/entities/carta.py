@@ -2,9 +2,15 @@ import tkinter as tk
 import random
 
 from Enumerations.TipoDeDica import TipoDeDica
-from Enumerations.CorDaCarta import Cor
 
 class Carta:
+    
+    #Cores da carta:
+    # red
+    # green
+    # blue
+    # yellow
+    # white
 
     def __init__(self, cor, numero):
         self.__recebeu_dica_cor = False
@@ -14,20 +20,19 @@ class Carta:
         self.__url = ""
         
     def convert_from_dict(carta_dict):
-        carta = Carta(Cor.get_cor(carta_dict._Carta__cor), carta_dict._Carta__numero)
+        carta = Carta(carta_dict._Carta__cor, carta_dict._Carta__numero)
         carta.__recebeu_dica_cor = carta_dict._Carta__recebeu_dica_cor
         carta.__recebeu_dica_numero = carta_dict._Carta__recebeu_dica_numero
         return carta
         
         
     def __repr__(self):
-        self.set_cor(self.get_cor().value)
         return str(self.__dict__)
 
     def get_cor(self):
         return self.__cor
 
-    def set_cor(self, cor: Cor):
+    def set_cor(self, cor: str):
         self.__cor = cor
 
     def get_numero(self):
@@ -65,11 +70,11 @@ class Carta:
         if carta_eh_do_jogador_local:
             url = url + "card"
             if self.__recebeu_dica_cor:
-                    url = url + self.__cor.name
+                    url = url + self.__cor
             if self.__recebeu_dica_numero: 
                     url = url + str(self.__numero)
         else:
-            url = url + self.__cor.name + str(self.__numero)
+            url = url + self.__cor + str(self.__numero)
             if not carta_esta_aberta:
                 if self.__recebeu_dica_cor:
                     url = url + "C"
