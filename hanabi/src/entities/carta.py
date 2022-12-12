@@ -66,7 +66,7 @@ class Carta:
             self.__recebeu_dica_numero = True
             
     def carrega_imagem_carta(self, carta_esta_aberta, carta_eh_do_jogador_local):
-        url = "src/images/"
+        url = "../src/images/"
         if carta_eh_do_jogador_local:
             url = url + "card"
             if self.__recebeu_dica_cor:

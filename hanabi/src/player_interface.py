@@ -95,7 +95,7 @@ class PlayerInterface(DogPlayerInterface):
     def start_game(self):
         match_status = self.board.get_estado().get_status()
         if match_status == 2 or match_status == 6:
-            self.board.reset_game()
+            self.board.reset()
             game_state = self.board.get_estado()
             self.update_gui(game_state)
 
@@ -165,12 +165,17 @@ class PlayerInterface(DogPlayerInterface):
         titulo_cartas_descartadas.grid(row=0, column=0)
 
         textos = ['' for i in range(5)]
-
-        for carta in cartas_descartadas:
-            cor_atual = carta.get_cor().value - 1 # Enum inicia no índice 1
-            textos[cor_atual] += str(carta.get_numero())
         
         cores = {1: "red", 2: "green", 3: "blue", 4: "yellow", 5:"white"}
+        
+        for carta in cartas_descartadas:
+            cor_atual = carta.get_cor() #.value - 1 # Enum inicia no índice 1
+            for i in cores:
+                if cores.get(i) == cor_atual:
+                    cor_atual = i
+            textos[cor_atual-1] += str(carta.get_numero())
+        
+        
 
         for texto, i in zip(textos, range(len(cores))):
             texto = list(texto)
@@ -211,7 +216,7 @@ class PlayerInterface(DogPlayerInterface):
             if carta:
                 img = ImageTk.PhotoImage(Image.open(carta.get_url()).resize((125, 200)))
             else:
-                img = ImageTk.PhotoImage(Image.open("src/images/cardjogada.png").resize((125, 200)))
+                img = ImageTk.PhotoImage(Image.open("../src/images/cardjogada.png").resize((125, 200)))
             cartaM = ttk.Button(
                 self.played_cards,
                 image=img,
@@ -226,7 +231,7 @@ class PlayerInterface(DogPlayerInterface):
         self.baralho_de_compras = Frame(self.main_window, width=200, height=200)
         self.baralho_de_compras.grid(row=0, column=1)
         
-        img = ImageTk.PhotoImage(Image.open("src/images/card.png").resize((125, 200)))
+        img = ImageTk.PhotoImage(Image.open("../src/images/card.png").resize((125, 200)))
         cartaB = ttk.Button(
             self.baralho_de_compras,
             image=img,
@@ -321,7 +326,13 @@ class PlayerInterface(DogPlayerInterface):
         else:
             game_state = self.board.get_estado()
             self.update_gui(game_state)
+            
+            mensagem = game_state.get_mensagem()
+            if  mensagem != "":
+                pontuacao = len(game_state.get_area_cartas_jogadas())
+                messagebox.showinfo(message = mensagem + "pontuacao: " + str(pontuacao))
             self.dog_server_interface.send_move(game_state.get_move_to_send())
+            
             
     def popup_jogar_descartar_carta(self, carta):       
         popup = Toplevel()
@@ -342,12 +353,14 @@ class PlayerInterface(DogPlayerInterface):
         self.board.jogar_carta(carta)
         game_state = self.board.get_estado()
         self.update_gui(game_state)
+        mensagem = game_state.get_mensagem()
+        if  mensagem != "":
+            pontuacao = len(game_state.get_area_cartas_jogadas())
+            messagebox.showinfo(message = mensagem + "pontuacao: " + str(pontuacao))
+            self.board.reset()
         self.dog_server_interface.send_move(game_state.get_move_to_send())
         
     def descartar_carta(self, popup, carta):
-        #DELETAR DEPOIS
-        self.board.get_estado().set_dicas_disponiveis(5)
-        #--------------------------------------
         popup.destroy()
         mensagem = self.board.descartar_carta(carta)
         if mensagem != "":
@@ -355,8 +368,12 @@ class PlayerInterface(DogPlayerInterface):
         else:
             game_state = self.board.get_estado()
             self.update_gui(game_state)
+            mensagem = game_state.get_mensagem()
+            if  mensagem != "":
+                pontuacao = len(game_state.get_area_cartas_jogadas())
+                messagebox.showinfo(message = mensagem + "pontuacao: " + str(pontuacao))
+                self.board.reset()
             self.dog_server_interface.send_move(game_state.get_move_to_send())
-          
 
     def selecionar_carta(self, carta):
         if self.board.get_estado().get_status() == 3:        
@@ -371,6 +388,12 @@ class PlayerInterface(DogPlayerInterface):
             
     def receive_move(self, a_move):
         a_move.pop("match_status", None)
+        mensagem = a_move.get("_InterfaceImage__mensage")
+        if mensagem != "":
+            pontuacao = len(a_move.get("_InterfaceImage__area_cartas_jogadas"))
+            messagebox.showinfo(message = mensagem + "pontuacao: " + str(pontuacao))
+            self.board.reset()
+        
         move = DefaultMunch.fromDict(a_move)
         print(str(move))
         self.board.receber_jogada(move)

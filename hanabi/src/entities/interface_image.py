@@ -3,7 +3,7 @@ import random
 from Enumerations.StatusPartida import StatusPartida
 from entities.carta import Carta
 from entities.jogador import Jogador
-
+from Enumerations.TipoDeDica import TipoDeDica
 
 class InterfaceImage:
     def __init__(self):
@@ -81,11 +81,11 @@ class InterfaceImage:
         cores = {1: "red", 2: "green", 3: "blue", 4: "yellow", 5:"white"}
         for i in range (1,6): #numero
             for j in range (1,6): #cor
-                baralho_compra.append(Carta(cores.get(i), i))
+                baralho_compra.append(Carta(cores.get(j), i))
                 if i == 1:
-                    baralho_compra.append(Carta(cores.get(i), i))
+                    baralho_compra.append(Carta(cores.get(j), i))
                 if i != 5:
-                    baralho_compra.append(Carta(cores.get(i), i))
+                    baralho_compra.append(Carta(cores.get(j), i))
         self.set_area_compra(random.sample(baralho_compra, len(baralho_compra)))
         self.distribui_cartas_pros_jogadores()
         
@@ -122,6 +122,8 @@ class InterfaceImage:
         jogador = self.get_jogador_local()
         jogador.jogar_descartar_carta(carta)
         self.__area_cartas_jogadas.append(carta)
+        if len(self.__area_compra) > 0:
+            self.comprar_carta()
         self.encerrar_turno_jogador()
         
     def get_jogador_local(self):
@@ -139,8 +141,10 @@ class InterfaceImage:
     def avaliar_fim_de_jogo(self):
         if len(self.__area_cartas_jogadas) == 25:
             self.define_mensagem_fim_de_jogo()
-            self.__partida_encerrada = True           
+            self.__partida_encerrada = True     
+            self.__match_status = "finished"        
         elif self.__infracoes_cometidas == 3:
+            self.__match_status = "finished"  
             self.__mensagem = "Vocês perderam! O festival foi um fracasso."
             self.__partida_encerrada = True           
         elif len(self.__area_compra) == 0:
@@ -286,9 +290,23 @@ class InterfaceImage:
             if jogador.get_id() == id:
                 return jogador
             
-    
+    def dar_dica(self, carta, tipo_de_dica):
+        jogador_dono_da_carta = self.get_jogador_dono_da_carta(carta)
+        if tipo_de_dica == TipoDeDica.COR:
+            for carta_jogador in jogador_dono_da_carta.get_mao_de_cartas():
+                if carta_jogador.get_cor() == carta.get_cor():
+                    carta_jogador.receber_dica(TipoDeDica.COR)
+        else:
+            for carta_jogador in jogador_dono_da_carta.get_mao_de_cartas():
+                if carta_jogador.get_numero() == carta.get_numero():
+                    carta_jogador.receber_dica(TipoDeDica.COR)
         
-            
+    def get_jogador_dono_da_carta(self, carta):        
+        for jogador in self.__jogadores:
+            for carta_jogador in jogador.get_mao_de_cartas():
+                if carta_jogador == carta:
+                    jogador_dono_da_carta = jogador
+                    return jogador_dono_da_carta      
                 
                     
         

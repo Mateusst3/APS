@@ -17,7 +17,7 @@ class Mesa:
 
     def dar_dica(self, carta: Carta, tipo_de_dica: TipoDeDica):
         if self.__estado.get_dicas_disponiveis() > 0:
-            carta.receber_dica(tipo_de_dica)
+            self.__estado.dar_dica(carta, tipo_de_dica)
             self.__estado.set_dicas_disponiveis(self.__estado.get_dicas_disponiveis() - 1)
             self.__estado.encerrar_turno_jogador()
             return ""
@@ -32,7 +32,10 @@ class Mesa:
                 self.__estado.set_dicas_disponiveis(self.__estado.get_dicas_disponiveis() + 1)
         else:
             self.__estado.set_infracoes_cometidas(self.__estado.get_infracoes_cometidas() + 1)
+            print("infracoes")
+            print(self.__estado.get_infracoes_cometidas)
             self.__estado.descartar_carta(cartaJogada, True)
+        self.__estado.avaliar_fim_de_jogo()
 
     def validar_carta_jogada(self, cartaJogada: Carta):
         cor = cartaJogada.get_cor()
