@@ -79,7 +79,7 @@ class PlayerInterface(DogPlayerInterface):
                     messagebox.showinfo(message=start_status.get_message())
 
     def receive_start(self, start_status):
-        self.start_game()  # use case reset game
+        self.start_game() 
         players = start_status.get_players()
         local_player_id = start_status.get_local_id()
         self.board.start_match(players, local_player_id)
@@ -96,6 +96,7 @@ class PlayerInterface(DogPlayerInterface):
     def receive_withdrawal_notification(self):
         self.board.receber_notificacao_desistencia()
         game_state = self.board.get_estado()
+        self.fill_main_window()
         self.update_gui(game_state)
         messagebox.showinfo(message = "O jogador desistiu. Partida encerrada!")
         
