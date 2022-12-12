@@ -18,8 +18,8 @@ class PlayerInterface(DogPlayerInterface):
         self.dog_server_interface = DogActor()
         self.fill_main_window()  # organização e preenchimento da janela
         game_state = self.board.get_estado()
-        print("GAME STATE NO __INIT__ DO JOGO")
-        print(str(game_state))
+        # print("GAME STATE NO __INIT__ DO JOGO")
+        # print(str(game_state))
         self.update_gui(game_state)
         player_name = simpledialog.askstring(title="Player identification", prompt="Qual o seu nome?")
         
@@ -43,7 +43,7 @@ class PlayerInterface(DogPlayerInterface):
         self.baralho_de_compras.grid(row=0, column=1)
         self.dicas_e_infracoes.grid(row=2, column=1)
 
-        print(self.main_window.grid_size())
+        # print(self.main_window.grid_size())
 
         # self.table_frame = Frame(self.main_window, padx=100, pady=40, bg="gold3")
         # self.table_frame.grid(row=0, column=0)
@@ -75,8 +75,8 @@ class PlayerInterface(DogPlayerInterface):
                     local_player_id = start_status.get_local_id()
                     self.board.start_match(players, local_player_id)
                     game_state = self.board.get_estado()
-                    print("GAME STATE NO START MATCH")
-                    print(str(game_state))
+                    # print("GAME STATE NO START MATCH")
+                    # print(str(game_state))
                     self.update_gui(game_state)
                     messagebox.showinfo(message=start_status.get_message())
                     if self.board.jogador_local_inicia():
@@ -108,8 +108,8 @@ class PlayerInterface(DogPlayerInterface):
         
 
     def update_gui(self, game_state):
-        print("GAME STATE NO UPDATE_GUI")
-        print(str(game_state))
+        # print("GAME STATE NO UPDATE_GUI")
+        # print(str(game_state))
         self.update_menu_status()
         jogadores = game_state.get_jogadores()
 
@@ -372,7 +372,7 @@ class PlayerInterface(DogPlayerInterface):
     def receive_move(self, a_move):
         a_move.pop("match_status", None)
         move = DefaultMunch.fromDict(a_move)
-        print(str(move))
+        # print(str(move))
         self.board.receber_jogada(move)
         game_state = self.board.get_estado()
         self.update_gui(game_state)

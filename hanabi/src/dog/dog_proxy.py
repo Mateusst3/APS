@@ -106,7 +106,7 @@ class DogProxy:
             self.status = 3  #   pass the turn and start looking for a move
         elif a_move["match_status"] == "finished":
             self.status = 2  #   connected without match
-        print(resp.text)
+        # print(resp.text)
         return resp.text
 
     def match_status(self):

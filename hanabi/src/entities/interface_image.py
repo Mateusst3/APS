@@ -3,6 +3,7 @@ import random
 from Enumerations.StatusPartida import StatusPartida
 from entities.carta import Carta
 from entities.jogador import Jogador
+from Enumerations.TipoDeDica import TipoDeDica
 
 
 class InterfaceImage:
@@ -139,17 +140,19 @@ class InterfaceImage:
     def avaliar_fim_de_jogo(self):
         if len(self.__area_cartas_jogadas) == 25:
             self.define_mensagem_fim_de_jogo()
-            self.__partida_encerrada = True           
+            self.__partida_encerrada = True 
+            self.__match_status = "finished"            
         elif self.__infracoes_cometidas == 3:
             self.__mensagem = "Vocês perderam! O festival foi um fracasso."
-            self.__partida_encerrada = True           
+            self.__partida_encerrada = True 
+            self.__match_status = "finished"            
         elif len(self.__area_compra) == 0:
             if self.__ultima_rodada:
                 jogaram_ultima_rodada = 0
                 for jogador in self.__jogadores:
                     if jogador.get_jogou_ultimo_turno():
                         jogaram_ultima_rodada += 1
-                if jogaram_ultima_rodada == len(self._jogadores):
+                if jogaram_ultima_rodada == len(self.__jogadores):
                     self.define_mensagem_fim_de_jogo()
                     self.__partida_encerrada = True   
                     self.__match_status = "finished"                            
@@ -214,8 +217,8 @@ class InterfaceImage:
         return mensagem
     
     def receber_jogada(self, jogada):
-        print("JOGADA NO RECEBER JOGADA")
-        print(str(jogada))
+        # print("JOGADA NO RECEBER JOGADA")
+        # print(str(jogada))
         self.set_area_cartas_jogadas(jogada.get_area_cartas_jogadas())
         self.set_area_compra(jogada.get_area_compra())
         self.set_area_descarte(jogada.get_area_descarte())
@@ -231,11 +234,9 @@ class InterfaceImage:
             self.set_status(StatusPartida.FINALIZADO.value)
         self.carrega_imagem_cartas()
         
-        print("SELF INTERFACE DEPOIS DA ATUALIZACAO")
-        print(str(self))
-            
+        # print("SELF INTERFACE DEPOIS DA ATUALIZACAO")
+        # print(str(self))          
         
-                
     def reset(self):
         self.set_area_cartas_jogadas([])
         self.set_area_compra([])
@@ -285,6 +286,27 @@ class InterfaceImage:
         for jogador in self.get_jogadores():
             if jogador.get_id() == id:
                 return jogador
+            
+    def dar_dica(self, carta, tipo_de_dica):
+        jogador_dono_da_carta = self.get_jogador_dono_da_carta(carta)
+        if tipo_de_dica == TipoDeDica.COR:
+            for carta_jogador in jogador_dono_da_carta.get_mao_de_cartas():
+                if carta_jogador.get_cor() == carta.get_cor():
+                    carta_jogador.receber_dica(TipoDeDica.COR)
+        else:
+            for carta_jogador in jogador_dono_da_carta.get_mao_de_cartas():
+                if carta_jogador.get_numero() == carta.get_numero():
+                    carta_jogador.receber_dica(TipoDeDica.COR)          
+             
+    def get_jogador_dono_da_carta(self, carta):        
+        for jogador in self.__jogadores:
+            for carta_jogador in jogador.get_mao_de_cartas():
+                if carta_jogador == carta:
+                    jogador_dono_da_carta = jogador
+                    
+        
+        
+        
             
     
         

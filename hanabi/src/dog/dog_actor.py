@@ -13,7 +13,7 @@ class DogActor:
         self.player_actor = a_player_actor
         resp_dict = self.proxy.initialize(player_name, self)
         self.polling_thread.start()
-        print(resp_dict)
+        # print(resp_dict)
         return resp_dict
 
     def start_match(self, number_of_players):
@@ -26,7 +26,7 @@ class DogActor:
         self.player_actor.receive_start(start_status)
 
     def receive_move(self, a_move):
-        print(a_move)
+        # print(a_move)
         self.player_actor.receive_move(a_move)
 
     def receive_withdrawal_notification(self):

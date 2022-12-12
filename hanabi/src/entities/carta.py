@@ -23,8 +23,7 @@ class Carta:
         carta = Carta(carta_dict._Carta__cor, carta_dict._Carta__numero)
         carta.__recebeu_dica_cor = carta_dict._Carta__recebeu_dica_cor
         carta.__recebeu_dica_numero = carta_dict._Carta__recebeu_dica_numero
-        return carta
-        
+        return carta       
         
     def __repr__(self):
         return str(self.__dict__)
