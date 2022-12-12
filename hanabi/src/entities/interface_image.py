@@ -173,6 +173,7 @@ class InterfaceImage:
             self.__mensagem = "Lendária, adultos e crianças atônitos, estrelas em seus olhos!"
     
     def start_match(self, jogadores, id):
+        self.__status = StatusPartida.AGUARDANDO_DISTRIBUICAO_CARTAS.value
         self.__jogadores = []         
         for i in range(len(jogadores)):
             jogador = Jogador(jogadores[i][0], jogadores[i][1], jogadores[i][2])
@@ -213,6 +214,8 @@ class InterfaceImage:
         return mensagem
     
     def receber_jogada(self, jogada):
+        print("JOGADA NO RECEBER JOGADA")
+        print(str(jogada))
         self.set_area_cartas_jogadas(jogada.get_area_cartas_jogadas())
         self.set_area_compra(jogada.get_area_compra())
         self.set_area_descarte(jogada.get_area_descarte())
@@ -220,11 +223,16 @@ class InterfaceImage:
         self.set_infracoes_cometidas(jogada.get_infracoes_cometidas())
         self.set_jogadores(jogada.get_jogadores())      
         
-        if jogada.get_match_status() == "next":
+        if jogada.get_match_status() == "next" and not self.get_status() == StatusPartida.AGUARDANDO_DISTRIBUICAO_CARTAS.value:
             self.set_status(StatusPartida.SEU_TURNO_EM_ANDAMENTO.value)
+        elif self.get_status() == StatusPartida.AGUARDANDO_DISTRIBUICAO_CARTAS.value: 
+            self.set_status(StatusPartida.NOT_SEU_TURNO_EM_ANDAMENTO.value)
         else: 
             self.set_status(StatusPartida.FINALIZADO.value)
         self.carrega_imagem_cartas()
+        
+        print("SELF INTERFACE DEPOIS DA ATUALIZACAO")
+        print(str(self))
             
         
                 
@@ -271,9 +279,7 @@ class InterfaceImage:
                 carta = Carta.convert_from_dict(carta_dict)
                 jogador.get_mao_de_cartas().append(carta)
             interface.get_jogadores().append(jogador)
-        return interface
-        
-            
+        return interface   
             
     def get_jogador_by_id(self, id):
         for jogador in self.get_jogadores():

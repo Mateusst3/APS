@@ -19,6 +19,8 @@ class PlayerInterface(DogPlayerInterface):
         self.dog_server_interface = DogActor()
         self.fill_main_window()  # organização e preenchimento da janela
         game_state = self.board.get_estado()
+        print("GAME STATE NO __INIT__ DO JOGO")
+        print(str(game_state))
         self.update_gui(game_state)
         player_name = simpledialog.askstring(title="Player identification", prompt="Qual o seu nome?")
         
@@ -74,9 +76,12 @@ class PlayerInterface(DogPlayerInterface):
                     local_player_id = start_status.get_local_id()
                     self.board.start_match(players, local_player_id)
                     game_state = self.board.get_estado()
+                    print("GAME STATE NO START MATCH")
+                    print(str(game_state))
                     self.update_gui(game_state)
-                    self.dog_server_interface.send_move(game_state.get_move_to_send())
                     messagebox.showinfo(message=start_status.get_message())
+                if self.board.jogador_local_inicia():
+                    self.dog_server_interface.send_move(game_state.get_move_to_send())
 
     def receive_start(self, start_status):
         self.start_game() 
@@ -102,6 +107,8 @@ class PlayerInterface(DogPlayerInterface):
         
 
     def update_gui(self, game_state):
+        print("GAME STATE NO UPDATE_GUI")
+        print(str(game_state))
         self.update_menu_status()
         jogadores = game_state.get_jogadores()
 
