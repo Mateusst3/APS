@@ -388,14 +388,14 @@ class PlayerInterface(DogPlayerInterface):
             
     def receive_move(self, a_move):
         a_move.pop("match_status", None)
-        mensagem = a_move.get("_InterfaceImage__mensage")
-        if mensagem != "":
-            pontuacao = len(a_move.get("_InterfaceImage__area_cartas_jogadas"))
-            messagebox.showinfo(message = mensagem + "pontuacao: " + str(pontuacao))
-            self.board.reset()
-        
         move = DefaultMunch.fromDict(a_move)
-        print(str(move))
-        self.board.receber_jogada(move)
-        game_state = self.board.get_estado()
-        self.update_gui(game_state)
+        mensagem = move._InterfaceImage__mensage
+        if mensagem != None:
+            pontuacao = len(move._InterfaceImage__area_cartas_jogadas)
+            messagebox.showinfo(message = mensagem) # + "pontuacao: " + str(pontuacao)
+            self.board.reset()
+        else:
+            print(str(move))
+            self.board.receber_jogada(move)
+            game_state = self.board.get_estado()
+            self.update_gui(game_state)

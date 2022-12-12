@@ -277,6 +277,8 @@ class InterfaceImage:
         interface.__partida_encerrada = interface_dict._InterfaceImage__partida_encerrada
         interface.set_jogadores([])
         for jogador_dict in interface_dict._InterfaceImage__jogadores:
+            print("JOGADOR")
+            print(jogador_dict)
             jogador = self.get_jogador_by_id(jogador_dict._Jogador__jogador_id)
             jogador.set_mao_de_cartas([])
             for carta_dict in jogador_dict._Jogador__mao_de_cartas:
@@ -286,8 +288,17 @@ class InterfaceImage:
         return interface   
             
     def get_jogador_by_id(self, id):
+        print("ID DO JOGADOR")
+        print(id)
+        print("TYPE")
+        print(type(id))
+        print(self.get_jogadores)
         for jogador in self.get_jogadores():
-            if jogador.get_id() == id:
+            print("TYPE JOGADOR")
+            print(type(jogador))
+            if jogador.get_id() == str(id):
+                print("ENTROU IF")
+                print("")
                 return jogador
             
     def dar_dica(self, carta, tipo_de_dica):
