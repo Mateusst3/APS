@@ -12,7 +12,7 @@ class Cor(Enum):
             return str(self.__dict__)
         
     def get_enum(self, index):
-        for cor in COR:
+        for cor in Cor:
             if cor.value == index:
                 return cor
         return None
