@@ -210,7 +210,7 @@ class PlayerInterface(DogPlayerInterface):
             if carta_mais_alta:
                 carta = Carta(cores.get(i+1), carta_mais_alta)
                 carta.carrega_imagem_carta(True, False)
-                cartas_mais_altas[i+1] = carta
+                cartas_mais_altas[i] = carta
 
         for carta in cartas_mais_altas:
             if carta:
