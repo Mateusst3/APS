@@ -146,7 +146,8 @@ class InterfaceImage:
         elif self.__infracoes_cometidas == 3:
             self.__match_status = "finished"  
             self.__mensagem = "Vocês perderam! O festival foi um fracasso."
-            self.__partida_encerrada = True           
+            self.__partida_encerrada = True   
+            print("JOGO FINALIZADO - DERROTA")        
         elif len(self.__area_compra) == 0:
             if self.__ultima_rodada:
                 jogaram_ultima_rodada = 0
@@ -218,8 +219,6 @@ class InterfaceImage:
         return mensagem
     
     def receber_jogada(self, jogada):
-        print("JOGADA NO RECEBER JOGADA")
-        print(str(jogada))
         self.set_area_cartas_jogadas(jogada.get_area_cartas_jogadas())
         self.set_area_compra(jogada.get_area_compra())
         self.set_area_descarte(jogada.get_area_descarte())
@@ -233,11 +232,7 @@ class InterfaceImage:
             self.set_status(StatusPartida.NOT_SEU_TURNO_EM_ANDAMENTO.value)
         else: 
             self.set_status(StatusPartida.FINALIZADO.value)
-        self.carrega_imagem_cartas()
-        
-        print("SELF INTERFACE DEPOIS DA ATUALIZACAO")
-        print(str(self))
-            
+        self.carrega_imagem_cartas()           
         
                 
     def reset(self):
@@ -277,8 +272,6 @@ class InterfaceImage:
         interface.__partida_encerrada = interface_dict._InterfaceImage__partida_encerrada
         interface.set_jogadores([])
         for jogador_dict in interface_dict._InterfaceImage__jogadores:
-            print("JOGADOR")
-            print(jogador_dict)
             jogador = self.get_jogador_by_id(jogador_dict._Jogador__jogador_id)
             jogador.set_mao_de_cartas([])
             for carta_dict in jogador_dict._Jogador__mao_de_cartas:
@@ -288,17 +281,8 @@ class InterfaceImage:
         return interface   
             
     def get_jogador_by_id(self, id):
-        print("ID DO JOGADOR")
-        print(id)
-        print("TYPE")
-        print(type(id))
-        print(self.get_jogadores)
         for jogador in self.get_jogadores():
-            print("TYPE JOGADOR")
-            print(type(jogador))
             if jogador.get_id() == str(id):
-                print("ENTROU IF")
-                print("")
                 return jogador
             
     def dar_dica(self, carta, tipo_de_dica):

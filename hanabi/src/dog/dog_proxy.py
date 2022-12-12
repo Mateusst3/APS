@@ -28,7 +28,7 @@ class DogProxy:
         if self.player_name == "":
             self.player_name = "player" + str(self.player_id)
         try:
-            config_file = open("../src/config/game.id", "r")
+            config_file = open("src/config/game.id", "r")
             self.game_id = config_file.read()
         except FileNotFoundError:
             self.status = 0
@@ -106,7 +106,6 @@ class DogProxy:
             self.status = 3  #   pass the turn and start looking for a move
         elif a_move["match_status"] == "finished":
             self.status = 2  #   connected without match
-        print(resp.text)
         return resp.text
 
     def match_status(self):

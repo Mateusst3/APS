@@ -18,8 +18,6 @@ class PlayerInterface(DogPlayerInterface):
         self.dog_server_interface = DogActor()
         self.fill_main_window()  # organização e preenchimento da janela
         game_state = self.board.get_estado()
-        print("GAME STATE NO __INIT__ DO JOGO")
-        print(str(game_state))
         self.update_gui(game_state)
         player_name = simpledialog.askstring(title="Player identification", prompt="Qual o seu nome?")
         
@@ -31,7 +29,6 @@ class PlayerInterface(DogPlayerInterface):
     def fill_main_window(self):
         self.main_window.title("Hanabi")
         self.main_window.geometry("1280x720")
-        #self.main_window.resizable(False, False)
         
         self.discard_pile = Frame(self.main_window, width=200, height=300)
         self.played_cards = Frame(self.main_window, width=500, height=200)
@@ -42,13 +39,6 @@ class PlayerInterface(DogPlayerInterface):
         self.played_cards.grid(row=1, column=0)
         self.baralho_de_compras.grid(row=0, column=1)
         self.dicas_e_infracoes.grid(row=2, column=1)
-
-        print(self.main_window.grid_size())
-
-        # self.table_frame = Frame(self.main_window, padx=100, pady=40, bg="gold3")
-        # self.table_frame.grid(row=0, column=0)
-        # self.message_frame = Frame(self.main_window, padx=0, pady=10)
-        # self.message_frame.grid(row=1, column=0)
 
         self.menubar = Menu(self.main_window)
         self.menubar.option_add("*tearOff", FALSE)
@@ -75,8 +65,6 @@ class PlayerInterface(DogPlayerInterface):
                     local_player_id = start_status.get_local_id()
                     self.board.start_match(players, local_player_id)
                     game_state = self.board.get_estado()
-                    print("GAME STATE NO START MATCH")
-                    print(str(game_state))
                     self.update_gui(game_state)
                     messagebox.showinfo(message=start_status.get_message())
                     if self.board.jogador_local_inicia():
@@ -108,13 +96,11 @@ class PlayerInterface(DogPlayerInterface):
         
 
     def update_gui(self, game_state):
-        print("GAME STATE NO UPDATE_GUI")
-        print(str(game_state))
         self.update_menu_status()
         jogadores = game_state.get_jogadores()
 
         self.mostrar_cartas_descartadas(game_state)
-        self.mostrar_cartas_jogadas(game_state)
+        self.mostrar_cartas_jogadas()
         self.mostra_baralho_compra(game_state)
         self.mostra_dicas_e_infracoes(game_state)
         self.mostra_baralho_jogadores(jogadores)
@@ -184,23 +170,11 @@ class PlayerInterface(DogPlayerInterface):
             linha = Label(self.discard_pile, text=texto, fg=cores.get(i+1), font=font.Font(size=12,))
             linha.grid(row=i+1, column=0)
 
-    def mostrar_cartas_jogadas(self, game_state):
+    def mostrar_cartas_jogadas(self):
         
         self.played_cards = Frame(self.main_window, width=100, height=200)
         self.played_cards.grid(row=1, column=0)
-        
-        cartas_jogadas = game_state.get_area_cartas_jogadas()
-
-        # cartas_jogadas = [Carta(Cor.red, 2),
-        #                       Carta(Cor.blue, 5),
-        #                       Carta(Cor.white, 2),
-        #                       Carta(Cor.blue, 2),
-        #                       Carta(Cor.blue, 2),
-        #                       Carta(Cor.blue, 2),
-        #                       ]
-
-        #self.board.get_estado().set_area_cartas_jogadas(cartas_jogadas)
-        
+               
         cartas_mais_altas = [0 for i in range(5)]
         
         cores = {1: "red", 2: "green", 3: "blue", 4: "yellow", 5:"white"}
@@ -216,7 +190,7 @@ class PlayerInterface(DogPlayerInterface):
             if carta:
                 img = ImageTk.PhotoImage(Image.open(carta.get_url()).resize((125, 200)))
             else:
-                img = ImageTk.PhotoImage(Image.open("../src/images/cardjogada.png").resize((125, 200)))
+                img = ImageTk.PhotoImage(Image.open("src/images/cardjogada.png").resize((125, 200)))
             cartaM = ttk.Button(
                 self.played_cards,
                 image=img,
@@ -224,14 +198,13 @@ class PlayerInterface(DogPlayerInterface):
                 compound='bottom'
             )
             cartaM.image = img
-            # cartaM.disable()
             cartaM.pack(side='left', fill='both')
 
     def mostra_baralho_compra(self, game_state):
         self.baralho_de_compras = Frame(self.main_window, width=200, height=200)
         self.baralho_de_compras.grid(row=0, column=1)
         
-        img = ImageTk.PhotoImage(Image.open("../src/images/card.png").resize((125, 200)))
+        img = ImageTk.PhotoImage(Image.open("src/images/card.png").resize((125, 200)))
         cartaB = ttk.Button(
             self.baralho_de_compras,
             image=img,
@@ -318,9 +291,9 @@ class PlayerInterface(DogPlayerInterface):
         button3 = Button(popup, text="Número", command= lambda : self.clicar_no_botao_de_dica(popup, carta, TipoDeDica.NUMERO))
         button3.pack(side='bottom', pady=10)
 
-    def clicar_no_botao_de_dica(self, popup, carta, tipoDeDica):
+    def clicar_no_botao_de_dica(self, popup, carta, tipo_de_dica):
         popup.destroy()
-        mensagem = self.board.dar_dica(carta, tipoDeDica)
+        mensagem = self.board.dar_dica(carta, tipo_de_dica)
         if mensagem != "":
             messagebox.showinfo(message=mensagem)
         else:
@@ -330,7 +303,7 @@ class PlayerInterface(DogPlayerInterface):
             mensagem = game_state.get_mensagem()
             if  mensagem != "":
                 pontuacao = len(game_state.get_area_cartas_jogadas())
-                messagebox.showinfo(message = mensagem + "pontuacao: " + str(pontuacao))
+                self.fim_de_jogo(pontuacao, mensagem)
             self.dog_server_interface.send_move(game_state.get_move_to_send())
             
             
@@ -356,9 +329,22 @@ class PlayerInterface(DogPlayerInterface):
         mensagem = game_state.get_mensagem()
         if  mensagem != "":
             pontuacao = len(game_state.get_area_cartas_jogadas())
-            messagebox.showinfo(message = mensagem + "pontuacao: " + str(pontuacao))
-            self.board.reset()
+            self.fim_de_jogo(pontuacao, mensagem)
         self.dog_server_interface.send_move(game_state.get_move_to_send())
+        
+    def fim_de_jogo(self, pontuacao, mensagem):
+        messagebox.showinfo(message = mensagem + "pontuacao: " + str(pontuacao))
+        self.reset()
+        
+    def reset(self):
+        self.board.reset()
+        self.played_cards.destroy()
+        self.dicas_e_infracoes.destroy()
+        self.discard_pile.destroy()
+        self.local_player_hand.destroy()
+        self.remote_player_hand.destroy()
+        self.fill_main_window()
+        self.update_gui(self.board.get_estado())
         
     def descartar_carta(self, popup, carta):
         popup.destroy()
@@ -371,8 +357,7 @@ class PlayerInterface(DogPlayerInterface):
             mensagem = game_state.get_mensagem()
             if  mensagem != "":
                 pontuacao = len(game_state.get_area_cartas_jogadas())
-                messagebox.showinfo(message = mensagem + "pontuacao: " + str(pontuacao))
-                self.board.reset()
+                self.fim_de_jogo(pontuacao, mensagem)
             self.dog_server_interface.send_move(game_state.get_move_to_send())
 
     def selecionar_carta(self, carta):
@@ -392,10 +377,9 @@ class PlayerInterface(DogPlayerInterface):
         mensagem = move._InterfaceImage__mensage
         if mensagem != None:
             pontuacao = len(move._InterfaceImage__area_cartas_jogadas)
-            messagebox.showinfo(message = mensagem) # + "pontuacao: " + str(pontuacao)
-            self.board.reset()
+            messagebox.showinfo(message = mensagem)  + "pontuacao: " + str(pontuacao)
+            self.fim_de_jogo(pontuacao, mensagem)
         else:
-            print(str(move))
             self.board.receber_jogada(move)
             game_state = self.board.get_estado()
             self.update_gui(game_state)
