@@ -13,6 +13,13 @@ class Carta:
         self.__recebeu_dica_numero = False
         self.__url = ""
         
+    def __init__(self, carta_dict):
+        self.__recebeu_dica_cor = carta_dict._Carta__recebeu_dica_cor
+        self.__cor = carta_dict._Carta__cor
+        self.__numero = carta_dict._Carta__numero
+        self.__recebeu_dica_numero = carta_dict._Carta__recebeu_dica_numero
+        
+        
     def __repr__(self):
         return str(self.__dict__)
 

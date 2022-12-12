@@ -102,10 +102,9 @@ class DogProxy:
         json_move = jsonpickle.encode(a_move)  # convert move to json
         post_data = {"player_id": self.player_id, "game_id": self.game_id, "move": json_move}
         resp = requests.post(url, data=post_data)
-        a_move = a_move.__dict__
-        if a_move["_InterfaceImage__match_status"] == "next":
+        if a_move["match_status"] == "next":
             self.status = 3  #   pass the turn and start looking for a move
-        elif a_move["_InterfaceImage__match_status"] == "finished":
+        elif a_move["match_status"] == "finished":
             self.status = 2  #   connected without match
         print(resp.text)
         return resp.text

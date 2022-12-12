@@ -217,16 +217,14 @@ class InterfaceImage:
         self.set_area_descarte(jogada.get_area_descarte())
         self.set_dicas_disponiveis(jogada.get_dicas_diponiveis())
         self.set_infracoes_cometidas(jogada.get_infracoes_cometidas())
+        self.set_jogadores(jogada.get_jogadores())
         
         if jogada.get_match_status() == "next":
             self.set_status(StatusPartida.SEU_TURNO_EM_ANDAMENTO.value)
         else: 
             self.set_status(StatusPartida.FINALIZADO.value)
             
-        for local_jogador_status in self.get_jogadores():
-            for remote_jogador_status in jogada.get_jogadores():
-                if local_jogador_status.get_id() == remote_jogador_status.get_id():
-                    local_jogador_status.set_mao_de_cartas(remote_jogador_status.get_mao_de_cartas())
+        
                 
     def reset(self):
         self.set_area_cartas_jogadas([])
@@ -237,6 +235,49 @@ class InterfaceImage:
         self.set_dicas_disponiveis(8)
         self.set_infracoes_cometidas(0)
         self.set_mensagem("")
+        
+    def get_move_to_send(self):
+        move_to_send = self.__dict__
+        move_to_send["match_status"] = self.get_match_status()
+        return move_to_send
+    
+    def convert_from_dict(self, interface_dict):
+        interface = InterfaceImage()
+        interface.set_mensagem = interface_dict._InterfaceImage__mensagem
+        interface.set_area_cartas_jogadas([])
+        for carta_jogada in interface_dict._InterfaceImage__area_cartas_jogadas:
+            carta = Carta(carta_jogada)
+            interface.__area_cartas_jogadas.append(carta)
+        interface.set_area_compra([])       
+        for carta_jogada in interface_dict._InterfaceImage__area_compra:
+            carta = Carta(carta_jogada)
+            interface.__area_compra.append(carta)
+        interface.set_area_descarte([]) 
+        for carta_jogada in interface_dict._InterfaceImage__area_descarte:
+            carta = Carta(carta_jogada)
+            interface.__area_descarte.append(carta)
+        interface.__match_status = interface_dict._InterfaceImage__match_status
+        interface.set_infracoes_cometidas(interface_dict._InterfaceImage__infracoes_cometidas)
+        interface.set_dicas_disponiveis(interface_dict._InterfaceImage__dicas_disponiveis)
+        interface.set_ultima_rodada(interface_dict._InterfaceImage__ultima_rodada)
+        interface.__partida_encerrada = interface_dict._InterfaceImage__partida_encerrada
+        interface.set_jogadores([])
+        for jogador_dict in interface_dict._InterfaceImage__jogadores:
+            jogador = self.get_jogador_by_id(jogador_dict._Jogador__jogador_id)
+            jogador.set_mao_de_cartas([])
+            for carta_dict in jogador_dict._Jogador__mao_de_cartas:
+                carta = Carta(carta_dict)
+                jogador.get_mao_de_cartas().append(carta)
+        return interface
+        
+            
+            
+    def get_jogador_by_id(self, id):
+        for jogador in self.get_jogadores():
+            if jogador.get_id() == id:
+                return jogador
+            
+    
         
             
                 

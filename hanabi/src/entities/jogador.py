@@ -63,4 +63,7 @@ class Jogador:
     def reset(self):
         self.set_mao_de_cartas([])
         self.set_jogou_ultimo_turno(False)
+    
+
+        
 

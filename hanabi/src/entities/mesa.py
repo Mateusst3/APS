@@ -77,7 +77,8 @@ class Mesa:
     def selecionar_carta(self, carta):
         return self.__estado.avaliar_carta_selecionada(carta)
 
-    def receber_jogada(self, jogada):
+    def receber_jogada(self, jogada_dict):
+        jogada = self.__estado.convert_from_dict(jogada_dict)
         self.__estado.receber_jogada(jogada)
 
     def reset(self):

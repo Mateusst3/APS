@@ -9,6 +9,8 @@ from Enumerations.StatusPartida import StatusPartida
 from Enumerations.CorDaCarta import Cor
 from Enumerations.TipoDeDica import TipoDeDica
 from entities.carta import Carta
+from bunch import bunchify
+from munch import DefaultMunch
 
 
 class PlayerInterface(DogPlayerInterface):
@@ -306,7 +308,7 @@ class PlayerInterface(DogPlayerInterface):
         else:
             game_state = self.board.get_estado()
             self.update_gui(game_state)
-            self.dog_server_interface.send_move(game_state)
+            self.dog_server_interface.send_move(game_state.get_move_to_send())
             
     def popup_jogar_descartar_carta(self, carta):       
         popup = Toplevel()
@@ -327,7 +329,7 @@ class PlayerInterface(DogPlayerInterface):
         self.board.jogar_carta(carta)
         game_state = self.board.get_estado()
         self.update_gui(game_state)
-        self.dog_server_interface.send_move(game_state)
+        self.dog_server_interface.send_move(game_state.get_move_to_send())
         
     def descartar_carta(self, popup, carta):
         #DELETAR DEPOIS
@@ -340,7 +342,7 @@ class PlayerInterface(DogPlayerInterface):
         else:
             game_state = self.board.get_estado()
             self.update_gui(game_state)
-            self.dog_server_interface.send_move(game_state)
+            self.dog_server_interface.send_move(game_state.get_move_to_send())
           
 
     def selecionar_carta(self, carta):
@@ -355,6 +357,9 @@ class PlayerInterface(DogPlayerInterface):
             messagebox.showinfo(message = "Aguarde seu turno para jogar!")
             
     def receive_move(self, a_move):
-        self.board.receber_jogada(a_move)
+        a_move.pop("match_status", None)
+        move = DefaultMunch.fromDict(a_move)
+        print(str(move))
+        self.board.receber_jogada(move)
         game_state = self.board.get_estado()
         self.update_gui(game_state)
