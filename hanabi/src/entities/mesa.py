@@ -17,7 +17,7 @@ class Mesa:
 
     def dar_dica(self, carta: Carta, tipo_de_dica: TipoDeDica):
         if self.__estado.get_dicas_disponiveis() > 0:
-            self.__estado.dar_dica(carta)
+            self.__estado.dar_dica(carta, tipo_de_dica)
             self.__estado.set_dicas_disponiveis(self.__estado.get_dicas_disponiveis() - 1)
             self.__estado.encerrar_turno_jogador()
             return ""

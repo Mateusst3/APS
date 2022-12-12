@@ -114,8 +114,8 @@ class InterfaceImage:
                     
     def encerrar_turno_jogador(self):
         self.set_status(StatusPartida.NOT_SEU_TURNO_EM_ANDAMENTO.value)
-        jogador = self.get_jogador_local()
         if self.__ultima_rodada:
+            jogador = self.get_jogador_local()
             jogador.set_jogou_ultimo_turno(True)
         self.carrega_imagem_cartas()
                 
@@ -123,6 +123,8 @@ class InterfaceImage:
         jogador = self.get_jogador_local()
         jogador.jogar_descartar_carta(carta)
         self.__area_cartas_jogadas.append(carta)
+        if len(self.__area_compra) > 0:
+            self.comprar_carta()
         self.encerrar_turno_jogador()
         
     def get_jogador_local(self):
