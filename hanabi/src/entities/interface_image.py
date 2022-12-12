@@ -310,7 +310,7 @@ class InterfaceImage:
         else:
             for carta_jogador in jogador_dono_da_carta.get_mao_de_cartas():
                 if carta_jogador.get_numero() == carta.get_numero():
-                    carta_jogador.receber_dica(TipoDeDica.COR)
+                    carta_jogador.receber_dica(TipoDeDica.NUMERO)
         
     def get_jogador_dono_da_carta(self, carta):        
         for jogador in self.__jogadores:
