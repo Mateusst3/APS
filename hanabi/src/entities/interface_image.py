@@ -218,12 +218,13 @@ class InterfaceImage:
         self.set_area_descarte(jogada.get_area_descarte())
         self.set_dicas_disponiveis(jogada.get_dicas_disponiveis())
         self.set_infracoes_cometidas(jogada.get_infracoes_cometidas())
-        self.set_jogadores(jogada.get_jogadores())
+        self.set_jogadores(jogada.get_jogadores())      
         
         if jogada.get_match_status() == "next":
             self.set_status(StatusPartida.SEU_TURNO_EM_ANDAMENTO.value)
         else: 
             self.set_status(StatusPartida.FINALIZADO.value)
+        self.carrega_imagem_cartas()
             
         
                 
@@ -269,6 +270,7 @@ class InterfaceImage:
             for carta_dict in jogador_dict._Jogador__mao_de_cartas:
                 carta = Carta.convert_from_dict(carta_dict)
                 jogador.get_mao_de_cartas().append(carta)
+            interface.get_jogadores().append(jogador)
         return interface
         
             
