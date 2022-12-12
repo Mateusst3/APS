@@ -10,3 +10,9 @@ class Cor(Enum):
     
     def __repr__(self):
             return str(self.__dict__)
+        
+    def get_enum(self, index):
+        for cor in COR:
+            if cor.value == index:
+                return cor
+        return None

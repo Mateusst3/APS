@@ -14,13 +14,14 @@ class Carta:
         self.__url = ""
         
     def convert_from_dict(carta_dict):
-        carta = Carta(carta_dict._Carta__cor, carta_dict._Carta__numero)
+        carta = Carta(Cor.get_cor(carta_dict._Carta__cor), carta_dict._Carta__numero)
         carta.__recebeu_dica_cor = carta_dict._Carta__recebeu_dica_cor
         carta.__recebeu_dica_numero = carta_dict._Carta__recebeu_dica_numero
         return carta
         
         
     def __repr__(self):
+        self.set_cor(self.get_cor().value)
         return str(self.__dict__)
 
     def get_cor(self):
