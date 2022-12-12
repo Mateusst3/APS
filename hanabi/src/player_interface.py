@@ -9,7 +9,6 @@ from Enumerations.StatusPartida import StatusPartida
 from Enumerations.CorDaCarta import Cor
 from Enumerations.TipoDeDica import TipoDeDica
 from entities.carta import Carta
-from bunch import bunchify
 from munch import DefaultMunch
 
 
@@ -76,6 +75,7 @@ class PlayerInterface(DogPlayerInterface):
                     self.board.start_match(players, local_player_id)
                     game_state = self.board.get_estado()
                     self.update_gui(game_state)
+                    self.dog_server_interface.send_move(game_state.get_move_to_send())
                     messagebox.showinfo(message=start_status.get_message())
 
     def receive_start(self, start_status):

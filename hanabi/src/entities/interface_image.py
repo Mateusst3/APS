@@ -183,8 +183,9 @@ class InterfaceImage:
                 else:
                     self.set_status(5)
             self.adicionar_jogador(jogador)
-        self.constroi_baralho_inicial()
-        self.carrega_imagem_cartas()
+        if self.get_jogador_local().get_posicao() == '1':
+            self.constroi_baralho_inicial()
+            self.carrega_imagem_cartas()
             
     def adicionar_jogador(self, jogador):
         self.get_jogadores().append(jogador)
