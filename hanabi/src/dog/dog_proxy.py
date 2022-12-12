@@ -28,7 +28,7 @@ class DogProxy:
         if self.player_name == "":
             self.player_name = "player" + str(self.player_id)
         try:
-            config_file = open("src/config/game.id", "r")
+            config_file = open("config/game.id", "r")
             self.game_id = config_file.read()
         except FileNotFoundError:
             self.status = 0
@@ -119,6 +119,10 @@ class DogProxy:
             move_dictionary = eval(
                 seek_result["1"]
             )  #   move is contained in seek_result as a string (to be converted in dictionary)
+            print("dog_proxy")
+            print(move_dictionary)
+            print("player_id")
+            print(self.player_id)
             if bool(move_dictionary):
                 match_status = move_dictionary["match_status"]
                 if match_status == "interrupted":  #  an opponent has abandoned the match
@@ -131,5 +135,5 @@ class DogProxy:
                         if int(move_player_order) > self.move_order:  #  not an already handled move
                             self.move_order = int(move_player_order)
                             self.dog_actor.receive_move(move_dictionary)
-                            if move_dictionary["match_status"] == "finished":
+                            if move_dictionary["_InterfaceImage__match_status"] == "finished":
                                 self.status = 2

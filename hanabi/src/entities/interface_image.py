@@ -149,10 +149,10 @@ class InterfaceImage:
                 for jogador in self.__jogadores:
                     if jogador.get_jogou_ultimo_turno():
                         jogaram_ultima_rodada += 1
-                if jogaram_ultima_rodada == len(self._jogadores):
+                if jogaram_ultima_rodada == len(self.__jogadores):
                     self.define_mensagem_fim_de_jogo()
                     self.__partida_encerrada = True   
-                    self.__match_status = "finished"                            
+                    self.__match_status = "finished"
             else:
                 self.__ultima_rodada = True
         return
